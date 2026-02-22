@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.UserVM>
+
+<div class="bp-table-responsive printPDF">
+    <table class="bp-table">
+        <thead>
+            <tr>
+                <th>الاسم</th>
+                <th class="no-print">@Html.DisplayNameFor(model => model.username)</th>
+                <th>تاريخ الإضافة</th>
+                <th>الحالة</th>
+                <th>الهاتف</th>
+                <th>Last Login</th>
+                <th>الرخص</th>
+                <th>إجمالى المصروفات</th>
+                <th class="no-print">الإجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td data-label="الاسم">@item.FullName</td>
+                    <td data-label="اسم الدخول" class="no-print">@item.username</td>
+                    <td data-label="تاريخ الإنشاء">@item.createdAt</td>
+                    <td data-label="الحالة">
+                        @if (item.status == "Active")
+                        {
+                            <span class="bp-badge bp-badge-success">نشط</span>
+                        }
+                        else
+                        {
+                            <span class="bp-badge bp-badge-danger">معطل</span>
+                        }
+                    </td>
+                    <td data-label="الهاتف">@item.phone</td>
+                    <td data-label="آخر دخول">@item.LastLogin</td>
+                    <td data-label="عدد الرخص">@item.NoOfPermits</td>
+                    <td data-label="المصروفات">@item.TotalCosts ج.م</td>
+                    <td data-label="الإجراءات" class="no-print">
+                        @if (item.status == "Active")
+                        {
+                            <a href="/Admin/DeactivateUser?userId=@item.Id"
+                               class="bp-btn bp-btn-danger"
+                               onclick="return confirm('هل تريد تعطيل @item.FullName؟')">
+                                <i class="fas fa-user-slash"></i> تعطيل
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/Admin/ActivateUser?userId=@item.Id"
+                               class="bp-btn bp-btn-success"
+                               onclick="return confirm('هل تريد تفعيل @item.FullName؟')">
+                                <i class="fas fa-user-check"></i> تفعيل
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,62 @@
+﻿@model Building_Permits.MVC.ViewModels.PermitCostVm
+
+@{
+    ViewBag.Title = "تفاصيل رخصة العميل";
+}
+
+@if (TempData["AddCost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["AddCost"]</div>
+}
+
+<div class="printPDF bp-card mb-4">
+    @if (User.IsInRole("Admin"))
+    {
+        <div>
+            <button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()" style="float:inline-end;">
+                <i class="fas fa-print"></i> طباعة
+            </button>
+        </div>
+    }
+  
+   
+    <div class="bp-card-header">
+        <h5 class="bp-card-title mb-0">
+            تفاصيل رخصة العميل: <span class="text-success">@Model.clientName</span>
+        </h5>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="bp-card-body">
+            <div class="mb-3">
+                <h4 class="text-success fw-bold mb-0">
+                    إجمالي تكاليف الرخصة: @Model.total ج.م
+                </h4>
+            </div>
+        </div>
+    }
+    
+
+        <div class="table-responsive">
+            <table class="bp-table">
+                <thead>
+                    <tr>
+                        <th>الوصف</th>
+                        <th>المبلغ</th>
+                        <th>تاريخ الإضافة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cost in Model.permitcosts)
+                    {
+                        <tr>
+                            <td>@cost.AmountFor</td>
+                            <td class="text-success">@cost.Amount.ToString("C")</td>
+                            <td>@(cost.AddedAt?.ToString("yyyy/MM/dd HH:mm") ?? "غير محدد")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

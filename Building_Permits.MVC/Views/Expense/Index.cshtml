@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.ExpenseVM>
+
+@{
+    ViewBag.Title = "سجل الحسابات";
+}
+@if (TempData["EditExpense"] != null)
+{
+	<div class="bp-alert bp-alert-success">@TempData["EditExpense"]</div>
+}
+else if (TempData["deleteexpens"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["deleteexpens"]</div>
+}
+<div class="container" dir="rtl">
+    <div class="bp-card">
+        <div class="bp-card-header">
+            <h4 class="bp-card-title mb-0">
+                <div class="bp-card-icon"><i class="fas fa-wallet"></i></div>
+                سجل الحسابات
+            </h4>
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()" style="float:inline-end;">
+                        <i class="fas fa-print"></i> طباعة
+                    </button>
+                }
+
+            </div>
+        </div>
+      
+        <div class="bp-card mt-4">
+            <div class="bp-card-body d-flex justify-content-between flex-wrap">
+                <!-- Section 1 -->
+                <div class="me-4">
+                    <h5 class="bp-card-title">
+                        <i class="fas fa-coins text-warning"></i>
+                        إجمالي المبالغ المتبقية:
+                    </h5>
+                    <p class="fs-5 fw-bold text-danger">
+                        @Model.FirstOrDefault()?.heHAs ج.م
+                    </p>
+                </div>
+
+                <!-- Section 2 -->
+                <div>
+                    <h5 class="bp-card-title">
+                        <i class="fas fa-hand-holding-usd text-success"></i>
+                        إجمالي الديون:
+                    </h5>
+                    <p class="fs-5 fw-bold text-primary">
+                        @Model.FirstOrDefault()?.debt ج.م
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bp-card-body">
+            <!-- Search -->
+            <div class="mb-3">
+                <input type="text" id="search" class="bp-form-control" placeholder="🔍 البحث..." />
+            </div>
+
+            <!-- Results -->
+            <div id="searchresult" class="printPDF">
+                @Html.Partial("_ExpensesTable", Model)
+            </div>
+        </div>
+    </div>
+
+    <!-- Totals -->
+    
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("#search").on("keyup", function () {
+                var query = $(this).val();
+
+                $.ajax({
+                    url: "/Expense/searchExpenses",
+                    type: "GET",
+                    data: { q: query },
+                    success: function (result) {
+                        $("#searchresult").html(result);
+                    },
+                    error: function () {
+                        $("#searchresult").html("<span class='bp-alert bp-alert-error'>حدث خطأ أثناء البحث</span>");
+                    }
+                });
+            });
+        });
+    </script>
+}

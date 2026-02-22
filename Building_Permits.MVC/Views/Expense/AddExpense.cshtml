@@ -1,0 +1,60 @@
+﻿@model Building_Permits.MVC.ViewModels.ExpenseModel
+
+@{
+    ViewData["Title"] = "إضافة حساب";
+}
+
+<div class="bp-card">
+    <div class="bp-card-header">
+        <h5 class="bp-card-title">
+            <div class="bp-card-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            إضافة حساب
+        </h5>
+    </div>
+
+    <div class="bp-card-body">
+        <form asp-action="AddExpense" class="bp-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="FormToken" value="@ViewBag.FormToken" />
+            <!-- PermitId (hidden) -->
+            <input asp-for="PermitId" type="hidden" />
+
+            <!-- اتفاقية المبلغ -->
+            <div class="bp-form-group">
+                @Html.LabelFor(m => m.AgreementAmount, new { @class = "bp-form-label" })
+                <input asp-for="AgreementAmount" class="bp-form-control" />
+                <span asp-validation-for="AgreementAmount" class="text-danger"></span>
+            </div>
+
+            <!-- المستلم -->
+            <div class="bp-form-group">
+                @Html.LabelFor(m => m.Received, new { @class = "bp-form-label" })
+                <input asp-for="Received" class="bp-form-control" />
+                <span asp-validation-for="Received" class="text-danger"></span>
+            </div>
+
+            <!-- مالك التصريح -->
+            <div class="bp-form-group">
+                @Html.LabelFor(m => m.PermitOwner, new { @class = "bp-form-label" })
+                <input asp-for="PermitOwner" readonly class="bp-form-control" />
+                <span asp-validation-for="PermitOwner" class="text-danger"></span>
+            </div>
+
+            <!-- Submit -->
+            <div class="bp-form-actions  text-center">
+                <button type="submit" class="bp-btn bp-btn-primary">
+                    <i class="fas fa-plus-circle me-1"></i> إنشاء
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

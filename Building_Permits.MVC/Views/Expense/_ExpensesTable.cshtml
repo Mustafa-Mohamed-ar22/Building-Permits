@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.ExpenseVM>
+
+<div class="bp-table-wrapper">
+    <table class="bp-table-responsive">
+        <thead>
+            <tr>
+                <th>اسم العميل</th>
+                <th>المبلغ المتفق عليه</th>
+                <th>المبلغ المستلم</th>
+                <th>المبلغ المتبقي</th>
+                <th class="text-center">تاريخ الإضافة</th>
+                <th class="text-center no-print">تعديل</th>
+                <th class="text-center no-print">حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var expense in Model)
+            {
+                <tr>
+                    <td data-label="اسم العميل">@expense.clientName</td>
+                    <td data-label="المبلغ المتفق">@expense.AgreedAmount ج.م</td>
+                    <td data-label="المبلغ المستلم">@expense.ReceivedAmount ج.م</td>
+                    <td data-label="المبلغ المتبقي">@expense.RemainingAmound ج.م</td>
+                    <td data-label="تاريخ الإضافة" class="text-center">@expense.createdAt?.ToString("yyyy/MM/dd")</td>
+                    <td data-label="تعديل" class="no-print">
+                        <a asp-action="Edit" asp-controller="Expense" asp-route-id="@expense.expenseId" class="bp-btn bp-btn-sm bp-btn-outline">
+                            <i class="fas fa-edit"></i> تعديل
+                        </a>
+                    </td>
+                    <td data-label="حذف" class="no-print">
+                        <a onclick="return confirm('هل أنت متأكد من حذف الحساب ؟');" asp-action="Delete" asp-controller="Expense" asp-route-id="@expense.expenseId" class="bp-btn bp-btn-sm bp-btn-outline">
+                            <i class="fas fa-trash"></i> حذف
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

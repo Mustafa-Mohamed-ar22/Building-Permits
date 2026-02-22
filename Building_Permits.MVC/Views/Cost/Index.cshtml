@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.PermitCostVm>
+
+@{
+    ViewBag.Title = "تكاليف الرخص";
+}
+@if (TempData["editcost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["editcost"]</div>
+}
+else if (TempData["DeleteCost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["DeleteCost"]</div>
+}
+<div class="bp-card">
+    <div class="bp-card-header" style="font-size:0.875rem;">
+        <h5 class="bp-card-title">
+            <div class="bp-card-icon">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            تفاصيل تكاليف الرخص
+        </h5>
+       
+    </div>
+
+    <div class="bp-card-body">
+        <!-- Search -->
+        <div class="bp-form-group mb-4">
+            <input type="text" id="search" class="bp-form-control" placeholder="ابحث عن عميل..." />
+        </div>
+
+        <!-- Results -->
+        <div id="searchresult" >
+            @Html.Partial("_costsTable", Model)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("#search").on("keyup", function () {
+                var query = $(this).val();
+
+                $.ajax({
+                    url: "/Cost/searchCosts",
+                    type: "GET",
+                    data: { q: query },
+                    success: function (result) {
+                        $("#searchresult").html(result);
+                    },
+                    error: function () {
+                        $("#searchresult").html("<div class='bp-alert bp-alert-danger'>حدث خطأ أثناء البحث.</div>");
+                    }
+                });
+            });
+        });
+    </script>
+}

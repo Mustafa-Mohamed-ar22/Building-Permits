@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.ArchiveModel>
+
+<div class="bp-table-wrapper printPDF">
+    <table class="bp-table-responsive">
+        <thead>
+            <tr>
+                <th>العميل</th>
+                <th>المهندس</th>
+                <th>البداية</th>
+                <th>النهاية</th>
+                <th>المدة</th>
+                <th>المصروفات</th>
+                <th>الاتفاق</th>
+                <th>الواصل</th>
+                <th>الباقى</th>
+                <th>المراحل</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td data-label="العميل" class="single-line">@Html.DisplayFor(modelItem => item.clientName)</td>
+                    <td data-label="المهندس" class="single-line">@Html.DisplayFor(modelItem => item.EngineerName)</td>
+                    <td data-label="البداية" class="single-line">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    <td data-label="النهاية" class="single-line">@item.finishedAt.Value.ToString("dd/MM/yyyyy")</td>
+                    <td data-label="عدد الأيام" class="text-center">@Html.DisplayFor(modelItem => item.NumOfDaysSpent) يومًا</td>
+                    <td data-label="المصروفات">@Html.DisplayFor(modelItem => item.Costs)</td>
+
+                    @if (item.AgreedOn != 0)
+                    {
+                        <td data-label="المبلغ المتفق">@Html.DisplayFor(modelItem => item.AgreedOn)</td>
+                    }
+                    else
+                    {
+                        <td data-label="المبلغ المتفق" class="text-secondary">لا يوجد</td>
+                    }
+
+                    @if (item.Received == 0)
+                    {
+                        <td data-label="الواصل" class="text-secondary">لا يوجد</td>
+                    }
+                    else
+                    {
+                        <td data-label="الواصل">@Html.DisplayFor(modelItem => item.Received)</td>
+                    }
+
+                    @if (item.Remaining == 0)
+                    {
+                        <td data-label="الباقى" class="text-secondary">لا يوجد</td>
+                    }
+                    else
+                    {
+                        <td data-label="الباقى">@Html.DisplayFor(modelItem => item.Remaining)</td>
+                    }
+                    <td data-label="تفاصيل" class="no-print"><a asp-action="PermitDetails" asp-controller="Permit" asp-route-id="@item.id">🔍 تفاصيل</a></td>
+                    <td>
+                        <a asp-action="FinalDelete"
+                           asp-controller="Permit"
+                           asp-route-id="@item.id"
+                           onclick="return confirm('سيتم حذف كل ما يتعلق بالرخصة على النظام .. هل أنت متأكد من إتمام هذا الإجراء ؟');"
+                           data-label="حذف"
+                           class="no-print">
+                            حذف نهائى
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

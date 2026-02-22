@@ -1,0 +1,67 @@
+﻿@model Building_Permits.MVC.ViewModels.ExpenseModel
+
+@{
+    ViewData["Title"] = "تعديل حساب";
+}
+
+<div class="container" dir="rtl">
+    <div class="bp-card">
+        <div class="bp-card-header">
+            <h4 class="bp-card-title mb-0">
+                <div class="bp-card-icon"><i class="fas fa-edit"></i></div>
+                تعديل بيانات الحساب
+            </h4>
+        </div>
+        <div class="bp-card-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="bp-alert bp-alert-error mb-3"></div>
+
+                <!-- Hidden PermitId -->
+                <div class="bp-form-group" hidden>
+                    @Html.LabelFor(m => m.PermitId, new { @class = "bp-form-label" })
+                    <input asp-for="PermitId" class="bp-form-control" />
+                    <span asp-validation-for="PermitId" class="text-danger"></span>
+                </div>
+
+                <!-- AgreementAmount -->
+                <div class="bp-form-group">
+                    @Html.LabelFor(m => m.AgreementAmount, new { @class = "bp-form-label" })
+                    <input asp-for="AgreementAmount" class="bp-form-control" />
+                    <span asp-validation-for="AgreementAmount" class="text-danger"></span>
+                </div>
+
+                <!-- Received -->
+                <div class="bp-form-group">
+                    @Html.LabelFor(m => m.Received, new { @class = "bp-form-label" })
+                    <input asp-for="Received" class="bp-form-control" />
+                    <span asp-validation-for="Received" class="text-danger"></span>
+                </div>
+
+                <!-- PermitOwner (readonly) -->
+                <div class="bp-form-group">
+                    @Html.LabelFor(m => m.PermitOwner, new { @class = "bp-form-label" })
+                    <input asp-for="PermitOwner" readonly class="bp-form-control" />
+                    <span asp-validation-for="PermitOwner" class="text-danger"></span>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="bp-btn bp-btn-primary">
+                        <i class="fas fa-save"></i> حفظ
+                    </button>
+                    <a asp-action="Index" asp-controller="Client" class="bp-btn bp-btn-outline">
+                        <i class="fas fa-arrow-left"></i> العودة للقائمة
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

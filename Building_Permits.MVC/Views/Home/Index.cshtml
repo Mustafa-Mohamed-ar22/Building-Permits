@@ -1,0 +1,348 @@
+﻿@{
+    ViewData["Title"] = "الرئيسية";
+    var isAdmin = User.IsInRole("Admin");
+    var isAuthenticated = User.Identity.IsAuthenticated;
+}
+<link rel="stylesheet" href="/css/home.css" />
+@if (TempData["addgncost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["addgncost"]</div>
+}
+<div class="home-container">
+    <!-- Hero Section with Logo -->
+    <section class="hero-section">
+        <!-- Overlay -->
+        <div class="hero-overlay"></div>
+
+        <!-- Background decorative icons - Right side only (suitable for RTL Arabic) -->
+        <div class="hero-icons">
+            <i class="fas fa-mosque"></i>
+            <i class="fas fa-building"></i>
+            <i class="fas fa-drafting-compass"></i>
+            <i class="fas fa-ruler-combined"></i>
+        </div>
+
+        <!-- Content -->
+        <div class="hero-content">
+            <h1 class="main-title">
+                نظام إدارة تصاريح البناء
+            </h1>
+            <p class="main-subtitle">
+                حلول متكاملة لإدارة الرخص والتصاريح الهندسية بكفاءة واحترافية
+            </p>
+
+            @if (!isAuthenticated)
+            {
+                <div class="hero-cta">
+                    <a asp-controller="Account" asp-action="Login" class="primary-btn" aria-label="تسجيل الدخول إلى النظام">
+                        <span>تسجيل الدخول</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            }
+
+            <div class="hero-extra-actions">
+                <a href="/Client/Create" class="secondary-btn" style="background-color:##423e2e;">
+                    <i class="fas fa-star"></i>
+                    <span>رخصة جديدة</span>
+                </a>
+                <a href="#features" class="secondary-btn outline">
+                    <i class="fas fa-info-circle"></i>
+                    <span>المميزات</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    @if (isAuthenticated)
+    {
+        @if (isAdmin)
+        {
+            <!-- Admin Dashboard -->
+            <section class="dashboard-section">
+                <div class="container">
+                    <!-- Quick Stats -->
+                    <div class="stats-grid">
+                        <a asp-controller="Client" asp-action="Index" class="stat-box stat-primary">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">125</h3>
+                                <p class="stat-label">إجمالي الرخص</p>
+                            </div>
+                            <span class="stat-arrow"><i class="fas fa-chevron-left"></i></span>
+                        </a>
+
+                        <a asp-controller="Client" asp-action="Index" class="stat-box stat-success">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">89</h3>
+                                <p class="stat-label">العملاء</p>
+                            </div>
+                            <span class="stat-arrow"><i class="fas fa-chevron-left"></i></span>
+                        </a>
+
+                        <a asp-controller="Notification" asp-action="GetAllNotifications" asp-route-filterType="overdue" class="stat-box stat-danger">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">23</h3>
+                                <p class="stat-label">رخص متأخرة</p>
+                            </div>
+                            <span class="stat-arrow"><i class="fas fa-chevron-left"></i></span>
+                        </a>
+
+                        <a asp-controller="Permit" asp-action="fulfilments" class="stat-box stat-warning">
+                            <div class="stat-icon">
+                                <i class="fas fa-pause-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">8</h3>
+                                <p class="stat-label">في الاستيفاء</p>
+                            </div>
+                            <span class="stat-arrow"><i class="fas fa-chevron-left"></i></span>
+                        </a>
+                    </div>
+
+                    <!-- Main Actions Grid -->
+                    <div class="actions-section" id="features">
+                        <h2 class="section-title">
+                            <span>الإدارة والعمليات</span>
+                            <div class="title-line"></div>
+                        </h2>
+
+                        <div class="actions-grid">
+                            <!-- Permits Management -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-file-alt"></i>
+                                    <h3>إدارة الرخص</h3>
+                                </div>
+                                <p class="card-desc">إضافة وتتبع ومراجعة جميع رخص البناء والتصاريح الهندسية</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Client" asp-action="Create" class="action-link">
+                                        <i class="fas fa-plus-circle"></i>
+                                        <span>إضافة رخصة جديدة</span>
+                                    </a>
+                                    <a asp-controller="Client" asp-action="Index" class="action-link">
+                                        <i class="fas fa-list"></i>
+                                        <span>عرض جميع الرخص</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Clients Management -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-users"></i>
+                                    <h3>إدارة العملاء</h3>
+                                </div>
+                                <p class="card-desc">متابعة بيانات العملاء ورخصهم ومعاملاتهم المالية</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Client" asp-action="Create" class="action-link">
+                                        <i class="fas fa-user-plus"></i>
+                                        <span>إضافة عميل جديد</span>
+                                    </a>
+                                    <a asp-controller="Client" asp-action="Index" class="action-link">
+                                        <i class="fas fa-address-book"></i>
+                                        <span>قائمة العملاء</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Financial Management -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <h3>الإدارة المالية</h3>
+                                </div>
+                                <p class="card-desc">متابعة الحسابات والمصروفات والمدفوعات المالية</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Expense" asp-action="Index" class="action-link">
+                                        <i class="fas fa-calculator"></i>
+                                        <span>الحسابات</span>
+                                    </a>
+                                    <a asp-controller="Cost" asp-action="Index" class="action-link">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>المصروفات</span>
+                                    </a>
+                                    <a asp-controller="GeneralCost" asp-action="Index" class="action-link">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>المصروفات العامة</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Notifications -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-bell"></i>
+                                    <h3>الإشعارات والتنبيهات</h3>
+                                </div>
+                                <p class="card-desc">متابعة التنبيهات والإشعارات المهمة والعاجلة</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Notification" asp-action="GetAllNotifications" class="action-link">
+                                        <i class="fas fa-inbox"></i>
+                                        <span>صندوق الإشعارات</span>
+                                    </a>
+                                    <a asp-controller="Notification" asp-action="GetAllNotifications" asp-route-filterType="overdue" class="action-link">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>المتأخرة</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Fulfillment -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-pause-circle"></i>
+                                    <h3>قسم الاستيفاء</h3>
+                                </div>
+                                <p class="card-desc">إدارة الرخص المتوقفة مؤقتاً في انتظار الاستيفاء</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Permit" asp-action="fulfilments" class="action-link">
+                                        <i class="fas fa-list-ul"></i>
+                                        <span>الرخص في الاستيفاء</span>
+                                    </a>
+                                    <a asp-controller="Notification" asp-action="GetAllNotifications" asp-route-filterType="fulfil" class="action-link">
+                                        <i class="fas fa-clock"></i>
+                                        <span>إشعارات الاستيفاء</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Reports & Archive -->
+                            <div class="action-card">
+                                <div class="card-header">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h3>التقارير والأرشيف</h3>
+                                </div>
+                                <p class="card-desc">الإحصائيات والتقارير الدورية والرخص المؤرشفة</p>
+                                <div class="card-actions">
+                                    <a asp-controller="Report" asp-action="Index" class="action-link">
+                                        <i class="fas fa-file-chart-line"></i>
+                                        <span>التقارير</span>
+                                    </a>
+                                    <a asp-controller="Permit" asp-action="Archieve" class="action-link">
+                                        <i class="fas fa-archive"></i>
+                                        <span>الأرشيف</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+        else
+        {
+            <!-- Regular User (Non-Admin) -->
+            <section class="user-section">
+                <div class="container">
+                    <div class="welcome-card">
+                        <div class="welcome-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h2>مرحباً بك، @User.Identity.Name</h2>
+                        <p>يمكنك الوصول إلى قسم إدارة العملاء</p>
+                    </div>
+
+                    <div class="user-actions-grid">
+                        <div class="action-card featured">
+                            <div class="card-header">
+                                <i class="fas fa-users"></i>
+                                <h3>إدارة العملاء</h3>
+                            </div>
+                            <p class="card-desc">عرض وإضافة وتعديل بيانات العملاء والمستفيدين</p>
+                            <div class="card-actions">
+                                <a asp-controller="Client" asp-action="Index" class="action-link primary">
+                                    <i class="fas fa-address-book"></i>
+                                    <span>قائمة العملاء</span>
+                                </a>
+                                <a asp-controller="Client" asp-action="Create" class="action-link">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>إضافة عميل جديد</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="info-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <h4>للحصول على صلاحيات إضافية</h4>
+                            <p>يرجى التواصل مع مدير النظام لطلب الصلاحيات المناسبة</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+    }
+    else
+    {
+        <!-- Guest Features -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">
+                    <span>مميزات النظام</span>
+                    <div class="title-line"></div>
+                </h2>
+
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h3>إدارة الرخص</h3>
+                        <p>نظام متكامل لإدارة وتتبع جميع رخص البناء ومراحل التنفيذ</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>التقارير والإحصائيات</h3>
+                        <p>تقارير دورية شاملة ومؤشرات أداء لمتابعة سير العمل</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>نظام التنبيهات</h3>
+                        <p>تنبيهات تلقائية للمواعيد المهمة والإجراءات المتأخرة</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3>الإدارة المالية</h3>
+                        <p>متابعة دقيقة للحسابات والمصروفات والإيرادات</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>متوافق مع الجوال</h3>
+                        <p>تصميم متجاوب يعمل بكفاءة على جميع الأجهزة</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>أمان وحماية</h3>
+                        <p>نظام أمان متقدم لحماية البيانات والصلاحيات</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</div>

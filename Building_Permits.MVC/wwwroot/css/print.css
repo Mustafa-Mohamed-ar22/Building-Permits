@@ -1,0 +1,301 @@
+/* ============================================
+   COMPREHENSIVE PRINT STYLESHEET
+   ============================================
+   
+   Usage:
+   1. Add class "printable" to any element you want to print
+   2. Add class "no-print" to any element you want to hide
+   3. Tables will always print as tables (never cards)
+   4. All buttons and links are automatically hidden
+   ============================================ */
+
+@media print {
+    /* ========== HIDE EVERYTHING BY DEFAULT ========== */
+    body * {
+        visibility: hidden !important;
+    }
+
+    /* ========== SHOW ONLY PRINTABLE CONTENT ========== */
+    .printable,
+    .printable * {
+        visibility: visible !important;
+    }
+
+    .printable {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    /* ========== HIDE NO-PRINT ELEMENTS ========== */
+    .no-print,
+    .no-print *,
+    button,
+    .btn,
+    .bp-btn,
+    a.btn,
+    a.bp-btn,
+    nav,
+    .navbar,
+    .navigation,
+    header,
+    footer,
+    .sidebar,
+    .modal,
+    .dropdown,
+    .tooltip,
+    .popover,
+    form button,
+    form input[type="button"],
+    form input[type="submit"],
+    form input[type="reset"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* ========== BODY & PAGE SETUP ========== */
+    @page {
+        size: A4;
+        margin: 1.5cm;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 1.4;
+        color: #000 !important;
+        background: #fff !important;
+    }
+
+    /* ========== REMOVE ALL VISUAL EFFECTS ========== */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+        background-image: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+    /* ========== TABLE STYLES - FORCE TABLE LAYOUT ========== */
+    .printable table,
+    .printable .table,
+    .printable .bp-table,
+    .printable .data-table {
+        display: table !important;
+        width: 100% !important;
+        border-collapse: collapse !important;
+        page-break-inside: auto !important;
+        margin: 10px 0 !important;
+        background: #fff !important;
+    }
+
+    .printable thead {
+        display: table-header-group !important;
+    }
+
+    .printable tbody {
+        display: table-row-group !important;
+    }
+
+    .printable tfoot {
+        display: table-footer-group !important;
+    }
+
+    .printable tr {
+        display: table-row !important;
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
+    }
+
+    .printable th,
+    .printable td {
+        display: table-cell !important;
+        float: none !important;
+        border: 1px solid #000 !important;
+        padding: 8px !important;
+        text-align: right !important;
+        font-size: 10pt !important;
+        vertical-align: top !important;
+        word-wrap: break-word !important;
+        width: auto !important;
+    }
+
+    .printable th {
+        background-color: #e0e0e0 !important;
+        font-weight: bold !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+        /* ========== REMOVE RESPONSIVE TABLE ARTIFACTS ========== */
+        .printable td::before,
+        .printable th::before,
+        .printable td::after,
+        .printable th::after {
+            content: none !important;
+            display: none !important;
+        }
+
+    /* ========== NESTED TABLES ========== */
+    .printable table table,
+    .printable .bp-table-nested {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin: 0 !important;
+    }
+
+        .printable table table th,
+        .printable table table td,
+        .printable .bp-table-nested th,
+        .printable .bp-table-nested td {
+            border: 1px solid #666 !important;
+            padding: 5px !important;
+            font-size: 9pt !important;
+        }
+
+        .printable table table th,
+        .printable .bp-table-nested th {
+            background-color: #f5f5f5 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+    /* ========== REMOVE RESPONSIVE WRAPPERS ========== */
+    .printable .table-responsive,
+    .printable .bp-table-responsive,
+    .printable .responsive-table {
+        overflow: visible !important;
+        width: 100% !important;
+        display: block !important;
+        border: none !important;
+    }
+
+    /* ========== TEXT & TYPOGRAPHY ========== */
+    .printable h1 {
+        font-size: 18pt;
+        margin: 0 0 10px 0;
+    }
+
+    .printable h2 {
+        font-size: 16pt;
+        margin: 0 0 8px 0;
+    }
+
+    .printable h3 {
+        font-size: 14pt;
+        margin: 0 0 6px 0;
+    }
+
+    .printable h4,
+    .printable h5,
+    .printable h6 {
+        font-size: 12pt;
+        margin: 0 0 4px 0;
+    }
+
+    .printable p {
+        margin: 0 0 6px 0;
+    }
+
+    /* ========== FLEXBOX & GRID LAYOUTS ========== */
+    .printable .d-flex,
+    .printable .flex,
+    .printable .flexbox {
+        display: block !important;
+    }
+
+    .printable .row {
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .printable .col,
+    .printable [class*="col-"] {
+        display: block !important;
+        width: 100% !important;
+        float: none !important;
+    }
+
+    /* ========== LINKS ========== */
+    .printable a {
+        text-decoration: none !important;
+        color: #000 !important;
+    }
+
+        /* Hide link buttons completely */
+        .printable a.btn,
+        .printable a.button,
+        .printable a.bp-btn {
+            display: none !important;
+        }
+
+    /* ========== IMAGES ========== */
+    .printable img {
+        max-width: 100% !important;
+        height: auto !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* ========== ORPHANS & WIDOWS ========== */
+    .printable p,
+    .printable h1,
+    .printable h2,
+    .printable h3,
+    .printable h4,
+    .printable h5,
+    .printable h6 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    .printable h1,
+    .printable h2,
+    .printable h3,
+    .printable h4,
+    .printable h5,
+    .printable h6 {
+        page-break-after: avoid !important;
+    }
+
+    /* ========== BORDERS & SPACING ========== */
+    .printable .card,
+    .printable .panel,
+    .printable .box {
+        border: 1px solid #ddd !important;
+        padding: 10px !important;
+        margin: 10px 0 !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* ========== ALERTS & NOTIFICATIONS ========== */
+    .printable .alert,
+    .printable .bp-alert,
+    .printable .notification {
+        display: none !important;
+    }
+
+    /* ========== FORMS ========== */
+    .printable input,
+    .printable textarea,
+    .printable select {
+        border: 1px solid #000 !important;
+        background: #fff !important;
+    }
+
+    /* ========== UTILITIES ========== */
+    .printable .page-break {
+        page-break-after: always !important;
+    }
+
+    .printable .avoid-break {
+        page-break-inside: avoid !important;
+    }
+}
+
+/* ============================================
+   END OF PRINT STYLESHEET
+   ============================================ */

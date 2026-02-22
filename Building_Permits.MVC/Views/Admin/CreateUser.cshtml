@@ -1,0 +1,58 @@
+﻿@model Building_Permits.MVC.ViewModels.RegisterationVM
+
+@{
+    ViewData["Title"] = "إضافة مستخدم جديد";
+}
+<div class="container my-4">
+<div class="bp-card">
+    <div class="bp-card-header">
+        <h3 class="bp-card-title">
+            <i class="fas fa-user-plus"></i> إضافة مستخدم جديد
+        </h3>
+    </div>
+
+    <div class="bp-card-body">
+        <form asp-action="CreateUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="bp-form-group">
+                <label asp-for="FullName" class="bp-form-label"></label>
+                <input asp-for="FullName" class="bp-form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="bp-form-group">
+                <label asp-for="Phone" class="bp-form-label"></label>
+                <input asp-for="Phone" class="bp-form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="bp-form-group">
+                <label asp-for="Username" class="bp-form-label"></label>
+                <input asp-for="Username" class="bp-form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="bp-form-group">
+                <label asp-for="Password" class="bp-form-label"></label>
+                <input asp-for="Password" type="password" class="bp-form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="bp-btn bp-btn-primary">
+                    <i class="fas fa-save"></i> إنشاء
+                </button>
+                <a asp-action="Users" asp-controller="Admin" class="bp-btn bp-btn-outline">
+                    ⬅ العودة للقائمة
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

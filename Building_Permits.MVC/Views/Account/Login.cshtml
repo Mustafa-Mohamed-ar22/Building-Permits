@@ -1,0 +1,153 @@
+﻿@model Building_Permits.MVC.ViewModels.LoginVM
+
+@{
+	ViewData["Title"] = "Login";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Login - Building Permits</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/login.css?v=2">
+</head>
+<body>
+	<div class="login-container">
+		<div class="login-card">
+			<div class="login-left">
+				<div class="brand-header">
+					<h1 class="brand-title">Welcome back</h1>
+					<p class="brand-subtitle">Sign in to continue to your engineering dashboard</p>
+				</div>
+
+				<form asp-action="Login" method="post" id="loginForm">
+					@Html.AntiForgeryToken()
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+					<div class="form-group">
+						<label asp-for="Username" class="label">Username or Email</label>
+						<div class="input-wrapper">
+							<input asp-for="Username" class="input" autocomplete="username" placeholder="Enter your username" required />
+							<span class="input-icon">🏗️</span>
+						</div>
+						<span asp-validation-for="Username" class="text-danger"></span>
+					</div>
+
+					<div class="form-group">
+						<label asp-for="Password" class="label">Password</label>
+						<div class="input-wrapper">
+							<input asp-for="Password" class="input" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+							<span class="input-icon" onclick="togglePassword()">🔐</span>
+						</div>
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+
+					<div class="checkbox-wrapper">
+						<input class="checkbox" asp-for="rememberMe" id="rememberMe" type="checkbox" />
+						<label for="rememberMe" class="checkbox-label">@Html.DisplayNameFor(model => model.rememberMe)</label>
+					</div>
+
+					<div class="login-actions">
+						<button type="submit" class="btn-primary" id="loginButton">
+							Sign In
+						</button>
+						<div class="forgot-password">
+							<a href="#" onclick="showForgotPassword()">Forgot your password?</a>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="login-right">
+				<div class="logo-wrap">
+					<img src="~/images/logp.jpg" alt="Building Permits Logo" />
+					<div class="logo-caption">Building Permits • Engineer Portal</div>
+					<ul class="features-list">
+						<li>Secure login and authentication</li>
+						<li>Real-time permit tracking</li>
+						<li>Digital document and file management</li>
+						<li>Regulation and compliance monitoring</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Enhanced form interactions
+		document.addEventListener('DOMContentLoaded', function () {
+			const form = document.getElementById('loginForm');
+			const loginButton = document.getElementById('loginButton');
+			const inputs = document.querySelectorAll('.input');
+
+			// Add focus effects
+			inputs.forEach(input => {
+				input.addEventListener('focus', function () {
+					this.parentElement.parentElement.querySelector('.label').style.color = 'var(--primary)';
+				});
+
+				input.addEventListener('blur', function () {
+					this.parentElement.parentElement.querySelector('.label').style.color = 'var(--text)';
+				});
+			});
+
+			// Form submission with loading state
+			form.addEventListener('submit', function (e) {
+				loginButton.textContent = 'Signing In...';
+				loginButton.classList.add('btn-loading');
+				loginButton.disabled = true;
+			});
+
+			// Keyboard navigation
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Enter' && document.activeElement.classList.contains('input')) {
+					const currentInput = document.activeElement;
+					const nextInput = getNextInput(currentInput);
+					if (nextInput) {
+						nextInput.focus();
+					} else {
+						form.submit();
+					}
+				}
+			});
+
+			function getNextInput(currentInput) {
+				const inputsArray = Array.from(inputs);
+				const currentIndex = inputsArray.indexOf(currentInput);
+				return inputsArray[currentIndex + 1] || null;
+			}
+		});
+
+		// Password visibility toggle
+		function togglePassword() {
+			const passwordInput = document.querySelector('input[type="password"]');
+			const icon = passwordInput.nextElementSibling;
+
+			if (passwordInput.type === 'password') {
+				passwordInput.type = 'text';
+				icon.textContent = '🔓';
+			} else {
+				passwordInput.type = 'password';
+				icon.textContent = '🔐';
+			}
+		}
+
+		// Forgot password functionality (placeholder)
+		function showForgotPassword() {
+			//alert('Forgot password functionality would be implemented here.');
+		}
+		// Add smooth scrolling for mobile
+		if (window.innerWidth <= 768) {
+			document.body.style.overflowX = 'hidden';
+		}
+	</script>
+</body>
+</html>
+
+
+		

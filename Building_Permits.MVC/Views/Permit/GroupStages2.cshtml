@@ -1,0 +1,206 @@
+﻿@model Building_Permits.MVC.ViewModels.GroupStages2VM;
+
+@{
+    ViewData["Title"] = "المرحلة الثانية - مراجعات المهندس والنقابة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid" dir="rtl">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-clipboard-check me-2"></i>
+                        المرحلة الثانية - مراجعات المهندس والنقابة
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="GroupStages2" method="post" enctype="multipart/form-data" id="stage2Form">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+
+                        <!-- مراجعة المهندس -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">مراجعة المهندس</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="EngineerReview" type="checkbox" class="form-check-input" />
+                                            <label class="form-check-label">تم</label>
+                                        </div>
+                                        <span asp-validation-for="EngineerReview" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.EngineerReviewImage, new { @class = "form-label" })
+                                        <input asp-for="EngineerReviewImage" type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                        <input asp-for="IsEngineerReviewHasImage" type="hidden" value="false" />
+                                        <span asp-validation-for="EngineerReviewImage" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(m => m.EngineerReviewNotes, new { @class = "form-label" })
+                                        @Html.TextAreaFor(m => m.EngineerReviewNotes, new { @class = "form-control", rows = "2" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- مراجعة المهندس شادي -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">مراجعة المهندس شادي</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="EngineerShadyReview" type="checkbox" class="form-check-input" />
+                                            <label class="form-check-label">تم</label>
+                                        </div>
+                                        <span asp-validation-for="EngineerShadyReview" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.EngineerShadyReviewImage, new { @class = "form-label" })
+                                        <input asp-for="EngineerShadyReviewImage" type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                        <input asp-for="IsEngineerShadyReviewHasImage" type="hidden" value="false" />
+                                        <span asp-validation-for="EngineerShadyReviewImage" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(m => m.EngineerShadyReviewNotes, new { @class = "form-label" })
+                                        @Html.TextAreaFor(m => m.EngineerShadyReviewNotes, new { @class = "form-control", rows = "2" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- النقابة -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">النقابة</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="Syndicate" type="checkbox" class="form-check-input" />
+                                            <label class="form-check-label">تم</label>
+                                        </div>
+                                        <span asp-validation-for="Syndicate" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(m => m.SyndicateImage, new { @class = "form-label" })
+                                        <input asp-for="SyndicateImage" type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                        <input asp-for="IsSyndicateHasImage" type="hidden" value="false" />
+                                        <span asp-validation-for="SyndicateImage" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(m => m.SyndicateNotes, new { @class = "form-label" })
+                                        @Html.TextAreaFor(m => m.SyndicateNotes, new { @class = "form-control", rows = "2" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i> حفظ التغييرات
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-lg me-2" onclick="window.location.reload()">
+                                    <i class="fas fa-undo me-2"></i> إلغاء
+                                </button>
+                            </div>
+                            <div>
+                                <a href="@Url.Action("Index", "Client")" class="btn btn-outline-primary">
+                                    <i class="fas fa-arrow-left me-2"></i> العودة للقائمة
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Map file inputs to their hidden flags
+            const fileInputs = [
+                { input: 'EngineerReviewImage', hidden: 'IsEngineerReviewHasImage' },
+                { input: 'EngineerShadyReviewImage', hidden: 'IsEngineerShadyReviewHasImage' },
+                { input: 'SyndicateImage', hidden: 'IsSyndicateHasImage' }
+            ];
+
+            fileInputs.forEach(item => {
+                const fileInput = document.getElementById(item.input);
+                const hiddenField = document.getElementById(item.hidden);
+                if (fileInput && hiddenField) {
+                    fileInput.addEventListener('change', function () {
+                        hiddenField.value = fileInput.files.length > 0 ? 'true' : 'false';
+                        console.log(item.hidden, hiddenField.value);
+                    });
+                }
+            });
+        });
+
+
+        let isValidEngineerReview = $('[name="EngineerReview"]').is(':disabled') || !$('[name="EngineerReview"]').is(':checked');
+        let isValidShadyReview = $('[name="EngineerShadyReview"]').is(':disabled') || !$('[name="EngineerShadyReview"]').is(':checked');
+        let isValidSyndicate = $('[name="Syndicate"]').is(':disabled') || !$('[name="Syndicate"]').is(':checked');
+
+        var originalEngineerState = $('[name="EngineerReview"]:checkbox').is(':checked');
+        var originalShadyState = $('[name="EngineerShadyReview"]:checkbox').is(':checked');
+        var originalSyndicateState = $('[name="Syndicate"]:checkbox').is(':checked');
+
+
+        var runContractValidation = function () {
+            if ($('[name="ContractReceiveAndAutharization"]').is(':disabled')) {
+                isValidContract = true;
+                return;
+            }
+
+            var currentState = $('[name="ContractReceiveAndAutharization"]').is(':checked');
+            console.log('Contract checkbox changed from', originalContractState, 'to', currentState);
+
+            var data = {
+                ContractReceiveAndAutharization: currentState,
+                IsContractHasImage: $('[name="IsContractHasImage"]').val() === 'true',
+                ContractReceiveAndAutharizationTranactionNumber: $('[name="ContractReceiveAndAutharizationTranactionNumber"]').val(),
+                IsContractHasExistedImage: $('[name="IsContractHasExistedImage"]').val() === 'true'
+            };
+
+            $.get('/Remote/isValidContract2', data).done(function (response) {
+                console.log('Contract remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="ContractReceiveAndAutharization"]');
+                if (response === true) {
+                    isValidContract = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidContract = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidContract = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة العقد والتوكيل').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+        $('[name="ContractReceiveAndAutharization"], [name="IsContractHasImage"], [name="ContractReceiveAndAutharizationTranactionNumber"], [name="IsContractHasExistedImage"]').on('change keyup input blur click', runContractValidation);
+
+    </script>
+}

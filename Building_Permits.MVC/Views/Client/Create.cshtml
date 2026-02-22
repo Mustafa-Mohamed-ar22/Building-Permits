@@ -1,0 +1,82 @@
+﻿@model Building_Permits.MVC.ViewModels.ClientWithPermitWithExpense
+
+@{
+    ViewData["Title"] = "إضافة عميل جديد";
+}
+
+<div class="container mt-5">
+    <div class="bp-card">
+        <div class="bp-card-header text-center">
+            <h1 class="bp-card-title">➕ إضافة عميل جديد</h1>
+        </div>
+
+        <form asp-action="Create" class="w-100">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="FormToken" value="@ViewBag.FormToken" />
+            <div class="row">
+                <!-- الاسم بالكامل -->
+                <div class="col-tablet-6 col-mobile-12">
+                    <div class="bp-form-group">
+                        <label asp-for="FullName" class="bp-form-label">الاسم بالكامل</label>
+                        <input asp-for="FullName" class="bp-form-control" placeholder="أدخل الاسم بالكامل" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- الرقم القومي -->
+                <div class="col-tablet-6 col-mobile-12">
+                    <div class="bp-form-group">
+                        <label asp-for="NationalId" class="bp-form-label">الرقم القومي</label>
+                        <input asp-for="NationalId" class="bp-form-control" placeholder="14 رقم" />
+                        <span asp-validation-for="NationalId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- رقم الهاتف -->
+                <div class="col-tablet-6 col-mobile-12">
+                    <div class="bp-form-group">
+                        <label asp-for="Phone" class="bp-form-label">رقم الهاتف</label>
+                        <input asp-for="Phone" class="bp-form-control" placeholder="أدخل رقم الهاتف" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- العنوان -->
+                <div class="col-tablet-6 col-mobile-12">
+                    <div class="bp-form-group">
+                        <label asp-for="Address" class="bp-form-label">العنوان</label>
+                        <input asp-for="Address" class="bp-form-control" placeholder="أدخل العنوان" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- نوع الرخصة -->
+                <div class="col-tablet-6 col-mobile-12">
+                    <div class="bp-form-group">
+                        <label asp-for="PermitType" class="bp-form-label">نوع الرخصة</label>
+                        <select asp-for="PermitType" class="bp-form-control">
+                            <option value="">اختر نوع الرخصة</option>
+                            <option value="سكنية">🏠 سكنية</option>
+                            <option value="تجارية">🏬 تجارية</option>
+                            <option value="صناعية">🏭 صناعية</option>
+                            <option value="إنشائية">🏭 إنشائية</option>
+                        </select>
+                        <span asp-validation-for="PermitType" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-5 justify-content-end">
+                <button type="submit" class="bp-btn bp-btn-primary">💾 حفظ</button>
+                <a asp-action="Index" class="bp-btn bp-btn-outline">↩️ رجوع</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.ArchiveModel>
+
+@{
+    ViewData["Title"] = "الأرشيف";
+}
+@if (TempData["deleteFinal"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["deleteFinal"]</div>
+}
+<div class="container" dir="rtl">
+    <div class="bp-card">
+        <div class="bp-card-header">
+            <h4 class="bp-card-title mb-0">
+                <div class="bp-card-icon"><i class="fas fa-archive"></i></div>
+                الأرشيف
+            </h4>
+            <button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()">
+                <i class="fas fa-print"></i> طباعة
+            </button>
+        </div>
+        <div class="bp-card-body">
+            <!-- Search -->
+            <div class="mb-3">
+                <input type="text" id="search" class="bp-form-control" placeholder="🔍 البحث..." />
+            </div>
+
+            <!-- Results -->
+            <div id="searchresult">
+                @Html.Partial("_ArchieveTable", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("#search").on("keyup", function () {
+                var query = $(this).val();
+
+                $.ajax({
+                    url: "/Permit/searchArchieve",
+                    type: "GET",
+                    data: { q: query },
+                    success: function (result) {
+                        $("#searchresult").html(result);
+                    },
+                    error: function () {
+                        $("#searchresult").html("<span class='bp-alert bp-alert-error'>حدث خطأ أثناء البحث</span>");
+                    }
+                });
+            });
+        });
+    </script>
+}

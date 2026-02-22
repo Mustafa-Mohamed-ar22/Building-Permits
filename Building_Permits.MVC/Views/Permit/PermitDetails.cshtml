@@ -1,0 +1,99 @@
+﻿@model Building_Permits.MVC.ViewModels.PermitDetailsVM
+
+@{
+    ViewData["Title"] = "تفاصيل الرخصة";
+}
+
+<div class="bp-card">
+    <div class="bp-card-header d-flex justify-content-between align-items-center">
+        <h3 class="bp-card-title">
+            <i class="fas fa-file-alt"></i> تفاصيل الرخصة للعميل: @Model.ClientName
+        </h3>
+        <div class="d-flex gap-2">
+            <a asp-action="Index" asp-controller="Client" class="bp-btn bp-btn-outline">
+                ⬅ العودة للقائمة
+            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()">
+                    <i class="fas fa-print"></i> طباعة
+                </button>
+            }
+
+        </div>
+    </div>
+
+    <div class="bp-card-body">
+        <p><strong>👤 اسم العميل:</strong> @Model.ClientName</p>
+        <p><strong>📅 تاريخ بدء الرخصة:</strong> @Model.PermitStartedAt.ToString("yyyy/MM/dd")</p>
+        <p><strong>⏱️ إجمالي مدة الرخصة:</strong> @Model.DaysOnPermitGenerally يوم</p>
+        <p><strong>💰 إجمالي المصروفات:</strong> @Model.TotolCosts ج.م</p>
+    </div>
+</div>
+
+<hr />
+
+<div class="bp-card mt-4">
+    <div class="bp-card-header">
+        <h4 class="bp-card-title"><i class="fas fa-tasks"></i> مراحل الرخصة</h4>
+    </div>
+
+    <div class="bp-table-responsive printPDF">
+        <table class="bp-table">
+            <thead>
+                <tr>
+                    <th>المرحلة</th>
+                    <th>تاريخ البدء</th>
+                    <th>تاريخ الانتهاء</th>
+                    <th>عدد الأيام</th>
+                    <th>المرفق</th>
+                    <th class="no-print">تحميل</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stage in Model.permitstages)
+                {
+                    <tr>
+                        <td data-label="المرحلة">@stage.stageName</td>
+                        <td data-label="تاريخ البدء">@stage.StageStartedAt.ToString("yyyy/MM/dd")</td>
+                        <td data-label="تاريخ الانتهاء">@stage.StageCompletedAt.ToString("yyyy/MM/dd")</td>
+                        <td data-label="عدد الأيام">@stage.DaysSpendOnthisStage</td>
+                        @{
+                            Console.WriteLine(stage.PathPhoto);
+                        }
+                        <td data-label="المرفق">
+                            @if (!string.IsNullOrEmpty(stage.PathPhoto))
+                            {
+                                // Convert physical path to web path
+                                var webPath = stage.PathPhoto.Replace("h:\\root\\home\\mustafaamohamed-001\\www\\BuildingPermits", "")
+                                .Replace("\\", "/");
+
+                                if (stage.PathPhoto.EndsWith(".pdf"))
+                                {
+                                    <a href="@webPath" target="_blank" class="bp-btn bp-btn-secondary bp-btn-sm">
+                                        📄 معاينة PDF
+                                    </a>
+                                }
+                                else
+                                {
+                                    <img src="@webPath" alt="Stage Photo"
+                                         class="img-thumbnail" style="max-width:150px; max-height:100px;" />
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-white">لا يوجد مرفق</span>
+                            }
+                        </td>
+                        <td data-label="تحميل">
+                            <a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = stage.stageId })"
+                               target="_blank" class="bp-btn bp-btn-primary bp-btn-sm">
+                                ⬇ تحميل
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

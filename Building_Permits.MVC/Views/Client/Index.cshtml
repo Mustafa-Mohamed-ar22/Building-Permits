@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Building_Permits.Core.Entities.Client>
+
+@{
+	ViewData["Title"] = "العملاء";
+}
+<div class="container mt-4">
+
+	@* Alerts *@
+	@if (TempData["StageGroup1"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["StageGroup1"]</div>
+	}
+	else if (TempData["AddExpense"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["AddExpense"]</div>
+	}
+	else if (TempData["AddCost"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["AddCost"]</div>
+	}
+	else if (TempData["Update"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["Update"]</div>
+	}
+	else if (TempData["EditExpense"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["EditExpense"]</div>
+	}
+	else if (TempData["StageGroup4"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["StageGroup4"]</div>
+	}
+	else if (TempData["fulfil"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["fulfil"]</div>
+	}
+	else if (TempData["deletePermit"] != null)
+	{
+		<div class="bp-alert bp-alert-success">@TempData["deletePermit"]</div>
+	}
+
+	<div class="bp-card">
+		<div class="bp-card-header">
+			<h1 class="bp-card-title">إدارة العملاء</h1>
+			<a asp-action="Create" class="bp-btn bp-btn-primary">➕ عميل جديد</a>
+		</div>
+
+		<div class="bp-form-group">
+			<label for="search" class="bp-form-label">البحث</label>
+			<input type="text" id="search" class="bp-form-control" placeholder="ابحث عن عميل..." />
+		</div>
+		
+		<div id="searchresult">
+			@Html.Partial("_clientTable", Model)
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		$(document).ready(function () {
+			$("#search").on("keyup", function () {
+				var query = $(this).val();
+
+				$.ajax({
+					url: "/Client/Search",
+					type: "GET",
+					data: { q: query },
+					success: function (result) {
+						$("#searchresult").html(result);
+					},
+					error: function () {
+						$("#searchresult").html("<div class='bp-alert bp-alert-error'>حدث خطأ أثناء البحث.</div>");
+					}
+				});
+			});
+		});
+	</script>
+}

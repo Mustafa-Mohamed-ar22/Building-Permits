@@ -1,0 +1,503 @@
+﻿@model Building_Permits.MVC.ViewModels.UpdateGroupStages2VM;
+
+@{
+	ViewData["Title"] = "المرحلة الثانية - مراجعات المهندس والنقابة";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" dir="rtl">
+	<div class="row">
+		<div class="col">
+			<div class="bp-card">
+				<div class="bp-card-header">
+					<h4 class="bp-card-title mb-0">
+						<div class="bp-card-icon">
+							<i class="fas fa-clipboard-list"></i>
+						</div>
+						المرحلة الثانية - مراجعات المهندس والنقابة
+					</h4>
+				</div>
+				<div class="bp-card-body">
+					<form asp-action="UpdateGroupStages2" method="post" enctype="multipart/form-data" id="stage2Form">
+						<div asp-validation-summary="All" class="text-danger"></div>
+						@Html.AntiForgeryToken()
+						<input type="hidden" asp-for="PermitId" />
+						<!-- مراجعة المهندس -->
+						<div class="bp-card mb-4">
+							<div class="bp-card-header">
+								<h5 class="bp-card-title">
+									<div class="bp-card-icon">
+										<i class="fas fa-user-check"></i>
+									</div>
+									مراجعة المهندس
+								</h5>
+							</div>
+							@if (User.IsInRole("Admin") || Model.EngineerReview == false || Model.PermitStages.FirstOrDefault(x => x.StageId == 8).CompletedAt.Value.Date == DateTime.Today)
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerReview" type="checkbox" class="form-check-input" />
+													<input name="EngineerReview" type="hidden" value="false" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerReviewImage, new { @class = "bp-form-label" })
+												@if (Model.isEngineerReviewHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 8 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="isEngineerReviewHasExistedImage" value="true" type="hidden" />
+												}
+												<input asp-for="EngineerReviewImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<input asp-for="IsEngineerReviewHasImage" type="hidden" value="false" />
+												<span asp-validation-for="EngineerReviewImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerReviewNotes, new { @class = "bp-form-label" })
+												@Html.TextAreaFor(m => m.EngineerReviewNotes, new { @class = "bp-form-control", rows = "2" })
+											</div>
+										</div>
+									</div>
+									<input asp-for="isEngineerReviewHasChanges" type="hidden" value="false" />
+								</div>
+							}
+							else
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerReview" type="checkbox" disabled class="form-check-input" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerReviewImage, new { @class = "bp-form-label" })
+												@if (Model.isEngineerReviewHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 8 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="isEngineerReviewHasExistedImage" value="true" type="hidden" />
+												}
+												<input asp-for="EngineerReviewImage" type="file" disabled class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<span asp-validation-for="EngineerReviewImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerReviewNotes, new { @class = "bp-form-label" })
+												<input asp-for="EngineerReviewNotes" disabled class="bp-form-control" />
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+
+
+						<!-- مراجعة المهندس شادي -->
+						<!-- مراجعة المهندس شادي -->
+						<div class="bp-card mb-4">
+							<div class="bp-card-header">
+								<h5 class="bp-card-title">
+									<div class="bp-card-icon">
+										<i class="fas fa-user-tie"></i>
+									</div>
+									مراجعة المهندس شادي
+								</h5>
+							</div>
+							@if (User.IsInRole("Admin") || Model.EngineerShadyReview == false || Model.PermitStages.FirstOrDefault(x => x.StageId == 9).CompletedAt.Value.Date == DateTime.Today)
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerShadyReview" type="checkbox" class="form-check-input" />
+													<input name="EngineerShadyReview" type="hidden" value="false" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerShadyReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerShadyReviewImage, new { @class = "bp-form-label" })
+												@if (Model.isEngineerShadyHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 9 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="isEngineerShadyHasExistedImage" type="hidden" value="true" />
+												}
+												<input asp-for="EngineerShadyReviewImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<input asp-for="IsEngineerShadyReviewHasImage" type="hidden" value="false" />
+												<span asp-validation-for="EngineerShadyReviewImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerShadyReviewNotes, new { @class = "bp-form-label" })
+												@Html.TextAreaFor(m => m.EngineerShadyReviewNotes, new { @class = "bp-form-control", rows = "2" })
+											</div>
+										</div>
+									</div>
+									<input asp-for="isEngineerShadyHasChanges" value="false" type="hidden" />
+								</div>
+							}
+							else
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerShadyReview" type="checkbox" disabled class="form-check-input" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerShadyReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerShadyReviewImage, new { @class = "bp-form-label" })
+												@if (Model.isEngineerShadyHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 9 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="isEngineerShadyHasExistedImage" value="true" type="hidden" />
+												}
+												<input asp-for="EngineerShadyReviewImage" disabled type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<span asp-validation-for="EngineerShadyReviewImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerShadyReviewNotes, new { @class = "bp-form-label" })
+												<input asp-for="EngineerShadyReviewNotes" disabled class="bp-form-control" />
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+
+						<!-- النقابة -->
+						<div class="bp-card mb-4">
+							<div class="bp-card-header">
+								<h5 class="bp-card-title">
+									<div class="bp-card-icon">
+										<i class="fas fa-users"></i>
+									</div>
+									النقابة
+								</h5>
+							</div>
+							@if (User.IsInRole("Admin") || Model.Syndicate == false || Model.PermitStages.FirstOrDefault(x => x.StageId == 10).CompletedAt.Value.Date == DateTime.Today)
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="Syndicate" type="checkbox" class="form-check-input" />
+													<input name="Syndicate" type="hidden" value="false" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="Syndicate" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.SyndicateImage, new { @class = "bp-form-label" })
+												@if (Model.IsSyndicateHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 10 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsSyndicateHasExistedImage" value="true" type="hidden" />
+												}
+												<input asp-for="SyndicateImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<input asp-for="IsSyndicateHasImage" type="hidden" value="false" />
+												<span asp-validation-for="SyndicateImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.SyndicateNotes, new { @class = "bp-form-label" })
+												@Html.TextAreaFor(m => m.SyndicateNotes, new { @class = "bp-form-control", rows = "2" })
+											</div>
+										</div>
+									</div>
+									<input asp-for="isSyndicateHasChanges" value="false" type="hidden" />
+								</div>
+							}
+							else
+							{
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="Syndicate" type="checkbox" disabled class="form-check-input" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="Syndicate" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.SyndicateImage, new { @class = "bp-form-label" })
+												@if (Model.IsSyndicateHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 10 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsSyndicateHasExistedImage" value="true" type="hidden" />
+												}
+												<input asp-for="SyndicateImage" type="file" disabled class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<span asp-validation-for="SyndicateImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.SyndicateNotes, new { @class = "bp-form-label" })
+												<input asp-for="SyndicateNotes" disabled class="bp-form-control" />
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						</div>
+
+						<!-- Action Buttons -->
+						<div class="d-flex justify-content-between">
+							<div>
+								<button type="submit" class="btn btn-primary btn-lg">
+									<i class="fas fa-save me-2"></i> حفظ التغييرات
+								</button>
+								
+							</div>
+							<div>
+								<a href="@Url.Action("Index", "Client")" class="bp-btn bp-btn-outline">
+									<i class="fas fa-arrow-left me-2"></i> العودة للقائمة
+								</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+
+	<script>
+		$(document).ready(function () {
+			const fileInputs = [
+				{ input: 'EngineerReviewImage', hidden: 'IsEngineerReviewHasImage' },
+				{ input: 'EngineerShadyReviewImage', hidden: 'IsEngineerShadyReviewHasImage' },
+				{ input: 'SyndicateImage', hidden: 'IsSyndicateHasImage' }
+			];
+
+			fileInputs.forEach(item => {
+				const fileInput = document.getElementById(item.input);
+				const hiddenField = document.getElementById(item.hidden);
+				if (fileInput && hiddenField) {
+					fileInput.addEventListener('change', function () {
+						hiddenField.value = fileInput.files.length > 0 ? 'true' : 'false';
+						console.log(item.hidden, hiddenField.value);
+						$(hiddenField).trigger('change');
+					});
+				}
+			});
+		});
+
+		let isValidEngineerReview = $('[name="EngineerReview"]').is(':disabled') || !$('[name="EngineerReview"]').is(':checked');
+		let isValidShadyReview = $('[name="EngineerShadyReview"]').is(':disabled') || !$('[name="EngineerShadyReview"]').is(':checked');
+		let isValidSyndicate = $('[name="Syndicate"]').is(':disabled') || !$('[name="Syndicate"]').is(':checked');
+
+		var originalEngineerState = $('[name="EngineerReview"]:checkbox').is(':checked');
+		var originalShadyState = $('[name="EngineerShadyReview"]:checkbox').is(':checked');
+		var originalSyndicateState = $('[name="Syndicate"]:checkbox').is(':checked');
+
+		var runEngineerReviewValidation = function () {
+			if ($('[name="EngineerReview"]').is(':disabled')) {
+				isValidEngineerReview = true;
+				return;
+			}
+			var currentState = $('[name="EngineerReview"]').is(':checked');
+
+			var data = {
+				EngineerReview: currentState,
+				IsEngineerReviewHasImage: $('[name="IsEngineerReviewHasImage"]').val() === 'true',
+				isEngineerReviewHasExistedImage: $('[name="isEngineerReviewHasExistedImage"]').val() === 'true',
+				PermitId: $('[name="PermitId"]').val()
+			};
+
+			$.get('/Remote/isValidEngineerReview', data).done(function (response) {
+				console.log('EngineerReview remote validation response:', response);
+				var errorSpan = $('[data-valmsg-for="EngineerReview"]');
+				if (response === true) {
+					isValidEngineerReview = true;
+					errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+				} else if (typeof response === 'string') {
+					isValidEngineerReview = false;
+					errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+				}
+			});
+		};
+
+		$('[name="EngineerReview"], [name="IsEngineerReviewHasImage"],[name="isEngineerReviewHasExistedImage"]').on('change keyup input blur click', runEngineerReviewValidation);
+
+
+		var runEngineerShadyValidation = function () {
+			if ($('[name="EngineerShadyReview"]').is(':disabled')) {
+				isValidShadyReview = true;
+				return;
+			}
+			var currentState = $('[name="EngineerShadyReview"]').is(':checked');
+
+			var data = {
+				EngineerShadyReview: currentState,
+				IsEngineerShadyReviewHasImage: $('[name="IsEngineerShadyReviewHasImage"]').val() === 'true',
+				isEngineerShadyHasExistedImage: $('[name="isEngineerShadyHasExistedImage"]').val() === 'true',
+				PermitId: $('[name="PermitId"]').val()
+			};
+
+			$.get('/Remote/isValidEngineerShadyReview', data).done(function (response) {
+				console.log('EngineerSahdyReview remote validation response:', response);
+				var errorSpan = $('[data-valmsg-for="EngineerShadyReview"]');
+				if (response === true) {
+					isValidShadyReview = true;
+					errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+				} else if (typeof response === 'string') {
+					isValidShadyReview = false;
+					errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+				}
+			});
+		};
+
+		$('[name="EngineerShadyReview"], [name="IsEngineerShadyReviewHasImage"],[name="isEngineerShadyHasExistedImage"]').on('change keyup input blur click', runEngineerShadyValidation);
+
+
+		var runSyndicateValidation = function () {
+			if ($('[name="Syndicate"]').is(':disabled')) {
+				isValidSyndicate = true;
+				return;
+			}
+			var currentState = $('[name="Syndicate"]').is(':checked');
+
+			var data = {
+				Syndicate: currentState,
+				IsSyndicateHasImage: $('[name="IsSyndicateHasImage"]').val() === 'true',
+				IsSyndicateHasExistedImage: $('[name="IsSyndicateHasExistedImage"]').val() === 'true',
+				PermitId: $('[name="PermitId"]').val()
+			};
+
+			$.get('/Remote/isValidSyndicate', data).done(function (response) {
+				console.log('Syndicate remote validation response:', response);
+				var errorSpan = $('[data-valmsg-for="Syndicate"]');
+				if (response === true) {
+					isValidSyndicate = true;
+					errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+				} else if (typeof response === 'string') {
+					isValidSyndicate = false;
+					errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+				}
+			});
+		};
+
+		$('[name="Syndicate"], [name="IsSyndicateHasImage"],[name="IsSyndicateHasExistedImage"]').on('change keyup input blur click', runSyndicateValidation);
+
+
+
+		$('#stage2Form').on('submit', function (e) {
+			var hasErrors = $('.field-validation-error:visible').length > 0 ||
+				$('.text-danger:not(:empty)').length > 0;
+
+			if (isValidEngineerReview == false) {
+				e.preventDefault();
+				alert('يرجى تصحيح الأخطاء الخاصة بمراجعة المهندس قبل الحفظ');
+				return false;
+			}
+			if (isValidShadyReview == false) {
+				e.preventDefault();
+				alert('يرجى تصحيح الأخطاء الخاصة بالمهندس شادى قبل الحفظ');
+				return false;
+			}
+			if (isValidSyndicate == false) {
+				e.preventDefault();
+				alert('يرجى تصحيح الأخطاء الخاصة بالنقابة قبل الحفظ');
+				return false;
+			}
+		});
+
+		$(document).ready(function () {
+			$('#EngineerReviewImage, [name="EngineerReview"], [name="EngineerReviewNotes"]')
+				.on('change keyup', function () {
+					$('[name="isEngineerReviewHasChanges"]').val('true');
+				});
+
+			$('#EngineerShadyReviewImage, [name="EngineerShadyReview"], [name="EngineerShadyReviewNotes"]')
+				.on('change keyup', function () {
+					$('[name="isEngineerShadyHasChanges"]').val('true');
+				});
+
+			$('#SyndicateImage, [name="Syndicate"], [name="SyndicateNotes"]')
+				.on('change keyup', function () {
+					$('[name="isSyndicateHasChanges"]').val('true');
+				});
+		});
+		$(document).ready(function () {
+			setTimeout(function () {
+				runEngineerReviewValidation();
+				runEngineerShadyValidation();
+				runSyndicateValidation();
+			}, 100);
+		});
+	</script>
+}

@@ -1,0 +1,37 @@
+﻿@model Building_Permits.MVC.ViewModels.ExpenseDetailsVM
+
+@{
+    ViewBag.Title = "تفاصيل الحساب";
+}
+
+<div class="container my-4">
+<div class="bp-card">
+    <div class="bp-card-header">
+        <h3 class="bp-card-title">
+            <i class="fas fa-file-invoice-dollar"></i>
+            تفاصيل الحساب للعميل: @Model.clientName
+        </h3>
+    </div>
+
+        <div class="bp-table-responsive">
+        <table class="bp-table">
+            <tr>
+                <th>المبلغ المتفق عليه</th>
+                <td>@Model.AgreedAmount ج.م </td>
+            </tr>
+            <tr>
+                <th>المبلغ المستلم</th>
+                <td>@Model.ReceivedAmount ج.م </td>
+            </tr>
+            <tr>
+                <th>المبلغ المتبقي</th>
+                <td>@Model.RemainingAmound ج.م</td>
+            </tr>
+            <tr>
+                <th>تاريخ الإضافة</th>
+                <td>@Model.createdAt?.ToString("yyyy/MM/dd")</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</div>

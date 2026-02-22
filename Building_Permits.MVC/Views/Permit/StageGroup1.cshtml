@@ -1,0 +1,700 @@
+﻿@model Building_Permits.MVC.ViewModels.StageGroup1View
+
+@{
+    ViewData["Title"] = "المرحلة الأولى - إجراءات التصاريح";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" dir="rtl">
+    <div class="row">
+        <div class="col">
+            <div class="bp-card">
+                <div class="bp-card-header">
+                    <h4 class="bp-card-title mb-0">
+                        <div class="bp-card-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        المرحلة الأولى - إجراءات التصاريح
+                    </h4>
+                </div>
+                <div class="bp-card-body">
+                    <form asp-action="StageGroup1" method="post" enctype="multipart/form-data" id="stageForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+                        <input asp-for="PermitId" hidden />
+
+                        <!-- استلام العقد والتوكيل -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-file-contract"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.ContractReceiveAndAutharization)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="ContractReceiveAndAutharization" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="ContractReceiveAndAutharization" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="ContractReceiveAndAutharization" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ContractReceiveAndAutharizationTranactionNumber, new { @class = "bp-form-label" })
+                                            <input asp-for="ContractReceiveAndAutharizationTranactionNumber" class="bp-form-control" />
+                                            <span asp-validation-for="ContractReceiveAndAutharizationTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ContractReceiveAndAutharizationImage, new { @class = "bp-form-label" })
+                                            <input asp-for="ContractReceiveAndAutharizationImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsContractHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ContractReceiveAndAutharizationNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.ContractReceiveAndAutharizationNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- بيان الصلاحية -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-certificate"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.Validity)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="Validity" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="Validity" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="Validity" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ValidityTranactionNumber, new { @class = "bp-form-label" })
+                                            @Html.TextBoxFor(m => m.ValidityTranactionNumber, new { @class = "bp-form-control" })
+                                            <span asp-validation-for="ValidityTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ValidityImage, new { @class = "bp-form-label" })
+                                            <input asp-for="ValidityImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsValidityHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.ValidityNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.ValidityNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sub-items Section -->
+                                <div class="bp-card mt-3" style="background: rgba(59, 130, 246, 0.05); border: 1px solid var(--info);">
+                                    <div class="bp-card-header p-3">
+                                        <h6 class="bp-card-title mb-0" style="color: var(--info); font-size: 0.95rem;">
+                                            <i class="fas fa-tasks me-2"></i>
+                                            الاستلامات الفرعية
+                                        </h6>
+                                    </div>
+                                    <div class="bp-card-body p-3">
+                                        <div class="row">
+                                            <div class="col-mobile-12 col-tablet-4 col-desktop-4">
+                                                <div class="d-flex align-items-center gap-3 mb-2">
+                                                    <input type="checkbox" name="EngineerReceive" id="EngineerReceive" class="form-check-input" value="true" style="transform: scale(1.1);" />
+                                                    <input type="hidden" name="EngineerReceive" value="false" />
+                                                    @Html.LabelFor(m => m.EngineerReceive, new { @class = "bp-form-label mb-0" })
+                                                </div>
+                                            </div>
+                                            <div class="col-mobile-12 col-tablet-4 col-desktop-4">
+                                                <div class="d-flex align-items-center gap-3 mb-2">
+                                                    <input type="checkbox" name="TechReceive" id="TechReceive" class="form-check-input" value="true" style="transform: scale(1.1);" />
+                                                    <input type="hidden" name="TechReceive" value="false" />
+                                                    @Html.LabelFor(m => m.TechReceive, new { @class = "bp-form-label mb-0" })
+                                                </div>
+                                            </div>
+                                            <div class="col-mobile-12 col-tablet-4 col-desktop-4">
+                                                <div class="d-flex align-items-center gap-3 mb-2">
+                                                    <input type="checkbox" name="ValidityReceive" id="ValidityReceive" class="form-check-input" value="true" style="transform: scale(1.1);" />
+                                                    <input type="hidden" name="ValidityReceive" value="false" />
+                                                    @Html.LabelFor(m => m.ValidityReceive, new { @class = "bp-form-label mb-0" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الشئون القانونية -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.LegalAffairs)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="LegalAffairs" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="LegalAffairs" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="LegalAffairs" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.LegalAffairsTranactionNumber, new { @class = "bp-form-label" })
+                                            @Html.TextBoxFor(m => m.LegalAffairsTranactionNumber, new { @class = "bp-form-control" })
+                                            <span asp-validation-for="LegalAffairsTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.LegalAffairsImage, new { @class = "bp-form-label" })
+                                            <input asp-for="LegalAffairsImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsLegalAffairsHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.LegalAffairsNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.LegalAffairsNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الرفع المساحى -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.Surveying)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="Surveying" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="Surveying" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="Surveying" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.SurveyingTranactionNumber, new { @class = "bp-form-label" })
+                                            @Html.TextBoxFor(m => m.SurveyingTranactionNumber, new { @class = "bp-form-control" })
+                                            <span asp-validation-for="SurveyingTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.SurveyingImage, new { @class = "bp-form-label" })
+                                            <input asp-for="SurveyingImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsSurveyingHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.SurveyingNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.SurveyingNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تقفيل الملف -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-folder-plus"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.CompletingFile)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="CompletingFile" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="CompletingFile" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="CompletingFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.CompletingFileTranactionNumber, new { @class = "bp-form-label" })
+                                            @Html.TextBoxFor(m => m.CompletingFileTranactionNumber, new { @class = "bp-form-control" })
+                                            <span asp-validation-for="CompletingFileTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.CompletingFileImage, new { @class = "bp-form-label" })
+                                            <input asp-for="CompletingFileImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsCompletingFileHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.CompletingFileNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.CompletingFileNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- تقديم الملف -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </div>
+                                    @Html.DisplayNameFor(m => m.FinishingFile)
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <!-- Status Section -->
+                                <div class="bp-card mb-3" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--border);">
+                                    <div class="bp-card-body p-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <input type="checkbox" asp-for="FinishingFile" class="form-check-input" style="transform: scale(1.2);" />
+                                                <input name="FinishingFile" type="hidden" value="false" />
+                                                <label class="bp-form-label mb-0" style="font-size: 1.1rem; font-weight: 600;">حالة الإنجاز: تم</label>
+                                            </div>
+                                            <span asp-validation-for="FinishingFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Details Section -->
+                                <div class="row">
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.FinishingFileTranactionNumber, new { @class = "bp-form-label" })
+                                            @Html.TextBoxFor(m => m.FinishingFileTranactionNumber, new { @class = "bp-form-control" })
+                                            <span asp-validation-for="FinishingFileTranactionNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.FinishingFileImage, new { @class = "bp-form-label" })
+                                            <input asp-for="FinishingFileImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                            <div>
+                                                <input asp-for="IsFinishingFileHasImage" value="false" hidden />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-mobile-12 col-tablet-12 col-desktop-4">
+                                        <div class="bp-form-group">
+                                            @Html.LabelFor(m => m.FinishingFileNotes, new { @class = "bp-form-label" })
+                                            @Html.TextAreaFor(m => m.FinishingFileNotes, new { @class = "bp-form-control", rows = "3" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="bp-btn bp-btn-primary">
+                                    <i class="fas fa-save"></i>
+                                    حفظ التغييرات
+                                </button>
+                            </div>
+                            <div>
+                                <a href="@Url.Action("Index", "Client")" class="bp-btn bp-btn-outline">
+                                    <i class="fas fa-arrow-left"></i>
+                                    العودة للقائمة
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+        let isValidContract = $('[name="ContractReceiveAndAutharization"]').is(':disabled') || !$('[name="ContractReceiveAndAutharization"]').is(':checked');
+        let isValidValidity = $('[name="Validity"]').is(':disabled') || !$('[name="Validity"]').is(':checked');
+        let isValidLegal = $('[name="LegalAffairs"]').is(':disabled') || !$('[name="LegalAffairs"]').is(':checked');
+        let isValidSurv = $('[name="Surveying"]').is(':disabled') || !$('[name="Surveying"]').is(':checked');
+        let isValidComplete = $('[name="CompletingFile"]').is(':disabled') || !$('[name="CompletingFile"]').is(':checked');
+        let isValidFinish = $('[name="FinishingFile"]').is(':disabled') || !$('[name="FinishingFile"]').is(':checked');
+
+        function debounce(func, wait) {
+            let timeout;
+            return function () {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, arguments), wait);
+            };
+        }
+
+
+        $(document).ready(function () {
+            const fileInputs = [
+                { input: 'ContractReceiveAndAutharizationImage', hidden: 'IsContractHasImage' },
+                { input: 'ValidityImage', hidden: 'IsValidityHasImage' },
+                { input: 'LegalAffairsImage', hidden: 'IsLegalAffairsHasImage' },
+                { input: 'SurveyingImage', hidden: 'IsSurveyingHasImage' },
+                { input: 'CompletingFileImage', hidden: 'IsCompletingFileHasImage' },
+                { input: 'FinishingFileImage', hidden: 'IsFinishingFileHasImage' }
+            ];
+
+            fileInputs.forEach(item => {
+                const fileInput = document.getElementById(item.input);
+                const hiddenField = document.getElementById(item.hidden);
+                if (fileInput && hiddenField) {
+                    fileInput.addEventListener('change', function () {
+                        hiddenField.value = fileInput.files.length > 0 ? 'true' : 'false';
+                        console.log(hiddenField.value);
+                        $(hiddenField).trigger('change');
+                    });
+                }
+            });
+        });
+
+        // Store original states
+        var originalContractState = $('[name="ContractReceiveAndAutharization"]:checkbox').is(':checked');
+        var originalValidityState = $('[name="Validity"]:checkbox').is(':checked');
+        var originalLegalAffairsState = $('[name="LegalAffairs"]:checkbox').is(':checked');
+        var originalSurveyingState = $('[name="Surveying"]:checkbox').is(':checked');
+        var originalCompletingFileState = $('[name="CompletingFile"]:checkbox').is(':checked');
+        var originalFinishingFileState = $('[name="FinishingFile"]:checkbox').is(':checked');
+
+        // ContractReceiveAndAutharization validation
+        var runContractValidation = function () {
+            if ($('[name="ContractReceiveAndAutharization"]').is(':disabled')) {
+                isValidContract = true;
+                return;
+            }
+
+            var currentState = $('[name="ContractReceiveAndAutharization"]').is(':checked');
+            console.log('Contract checkbox changed from', originalContractState, 'to', currentState);
+
+            var data = {
+                ContractReceiveAndAutharization: currentState,
+                IsContractHasImage: $('[name="IsContractHasImage"]').val() === 'true',
+                ContractReceiveAndAutharizationTranactionNumber: $('[name="ContractReceiveAndAutharizationTranactionNumber"]').val(),
+                IsContractHasExistedImage: $('[name="IsContractHasExistedImage"]').val() === 'true'
+            };
+
+            $.get('/Remote/isValidContract2', data).done(function (response) {
+                console.log('Contract remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="ContractReceiveAndAutharization"]');
+                if (response === true) {
+                    isValidContract = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidContract = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidContract = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة العقد والتوكيل').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+        $('[name="ContractReceiveAndAutharization"], [name="IsContractHasImage"], [name="ContractReceiveAndAutharizationTranactionNumber"], [name="IsContractHasExistedImage"]').on('change keyup input blur click', runContractValidation);
+
+
+
+
+        var runValidityValidation = function () {
+            if ($('[name="Validity"]').is(':disabled')) {
+                isValidValidity = true;
+                return;
+            }
+            var currentState = $('[name="Validity"]').is(':checked');
+
+            var data = {
+                Validity: currentState,
+                ValidityReceive: $('[name="ValidityReceive"]').is(':checked'),
+                TechReceive: $('[name="TechReceive"]').is(':checked'),
+                EngineerReceive: $('[name="EngineerReceive"]').is(':checked'),
+                IsValidityHasImage: $('[name="IsValidityHasImage"]').val() === 'true',
+                ValidityTranactionNumber: $('[name="ValidityTranactionNumber"]').val(),
+                IsValidityHasExistedImage: $('[name="IsValidityHasExistedImage"]').val() === 'true',
+                PermitId: $('[name="PermitId"]').val()
+            };
+
+            $.get('/Remote/isValidValidity2', data).done(function (response) {
+                console.log('Validity remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="Validity"]');
+                if (response === true) {
+                    isValidValidity = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidValidity = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidValidity = false;
+                    errorSpan.text('بيان الصلاحية يرتبط بموعد اسنلام المهندس والفنى واستلام الصلاحية').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        };
+
+        // Bind to change events on all relevant inputs
+        $('[name="Validity"], [name="ValidityReceive"], [name="TechReceive"], [name="EngineerReceive"], [name="IsValidityHasImage"], [name="ValidityTranactionNumber"], [name="IsValidityHasExistedImage"]').on('change keyup input blur click', runValidityValidation);
+
+
+        // LegalAffairs validation
+        var LegalAffairsValidation = function () {
+            if ($('[name="LegalAffairs"]').is(':disabled')) {
+                isValidLegal = true;
+                return;
+            }
+            var currentState = $('[name="LegalAffairs"]').is(':checked');
+            console.log('LegalAffairs checkbox changed from', originalLegalAffairsState, 'to', currentState);
+
+            var data = {
+                LegalAffairs: currentState,
+                IsLegalAffairsHasImage: $('[name="IsLegalAffairsHasImage"]').val() === 'true',
+                LegalAffairsTranactionNumber: $('[name="LegalAffairsTranactionNumber"]').val(),
+                IsLegalHasExistedImage: $('[name="IsLegalHasExistedImage"]').val() === 'true',
+                StageId: 4
+            };
+
+            $.get('/Remote/isValidLegalAffairs2', data).done(function (response) {
+                console.log('LegalAffairs remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="LegalAffairs"]');
+                if (response === true) {
+                    isValidLegal = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidLegal = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidLegal = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة من إيصال الشئون القانونية').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+
+        $('[name="LegalAffairs"], [name="IsLegalAffairsHasImage"], [name="LegalAffairsTranactionNumber"], [name="IsLegalHasExistedImage"]').on('change keyup input blur click', LegalAffairsValidation);
+
+
+        // Surveying validation
+        let SurveyingValidation = function () {
+            var currentState = $('[name="Surveying"]').is(':checked');
+            console.log('Surveying checkbox changed from', originalSurveyingState, 'to', currentState);
+
+            var data = {
+                Surveying: currentState,
+                IsSurveyingHasImage: $('[name="IsSurveyingHasImage"]').val() === 'true',
+                SurveyingTranactionNumber: $('[name="SurveyingTranactionNumber"]').val(),
+                IsSurveyingHasExistedImage: $('[name="IsSurveyingHasExistedImage"]').val() === 'true'
+            };
+
+            $.get('/Remote/isValidSurveying2', data).done(function (response) {
+                console.log('Surveying remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="Surveying"]');
+                if (response === true) {
+                    isValidSurv = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidSurv = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidSurv = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة من بيان الرفع المساحى الرقمى').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+        $('[name="Surveying"], [name="IsSurveyingHasImage"], [name="SurveyingTranactionNumber"], [name="IsSurveyingHasExistedImage"]').on('change keyup input blur click', SurveyingValidation);
+
+        // CompletingFile validation
+        let CompletingValidaion = function () {
+            var currentState = $('[name="CompletingFile"]').is(':checked');
+            console.log('CompletingFile checkbox changed from', originalCompletingFileState, 'to', currentState);
+
+            var data = {
+                CompletingFile: currentState,
+                IsCompletingFileHasImage: $('[name="IsCompletingFileHasImage"]').val() === 'true',
+                CompletingFileTranactionNumber: $('[name="CompletingFileTranactionNumber"]').val(),
+                IsCompletingHasExistedImage: $('[name="IsCompletingHasExistedImage"]').val() === 'true'
+            };
+
+            $.get('/Remote/isvalidCompleteingFile2', data).done(function (response) {
+                console.log('CompletingFile remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="CompletingFile"]');
+                if (response === true) {
+                    isValidComplete = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidComplete = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidComplete = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة من تثقيل الملف').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+        $('[name="CompletingFile"], [name="IsCompletingFileHasImage"], [name="CompletingFileTranactionNumber"], [name="IsCompletingHasExistedImage"]').on('change keyup input blur click', CompletingValidaion);
+
+        // FinishingFile validation
+        let FinishingValidation = function () {
+            var currentState = $('[name="FinishingFile"]').is(':checked');
+            console.log('FinishingFile checkbox changed from', originalFinishingFileState, 'to', currentState);
+
+            var data = {
+                FinishingFile: currentState,
+                IsFinishingFileHasImage: $('[name="IsFinishingFileHasImage"]').val() === 'true',
+                FinishingFileTranactionNumber: $('[name="FinishingFileTranactionNumber"]').val(),
+                IsFinishingHasExistedImage: $('[name="IsFinishingHasExistedImage"]').val() === 'true'
+            };
+
+            $.get('/Remote/isValidFinishingFile2', data).done(function (response) {
+                console.log('FinishingFile remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="FinishingFile"]');
+                if (response === true) {
+                    isValidFinish = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidFinish = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                } else {
+                    isValidFinish = false;
+                    errorSpan.text('من فضلك أرفق رقم المعاملة وصورة من إيصال تقديم الملف').removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        }
+        $('[name="FinishingFile"], [name="IsFinishingFileHasImage"], [name="FinishingFileTranactionNumber"], [name="IsFinishingHasExistedImage"]').on('change keyup input blur click', FinishingValidation);
+
+        $('#stageForm').on('submit', function (e) {
+            // Check for any visible validation errors
+            var hasErrors = $('.field-validation-error:visible').length > 0 ||
+                $('.text-danger:not(:empty)').length > 0;
+
+            if (isValidContract == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة باستلام العقد والتوكيل قبل الحفظ');
+                return false;
+            }
+            if (isValidValidity == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بالصلاحية قبل الحفظ');
+                return false;
+            }
+            if (isValidLegal == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بالشئون القانونية قبل الحفظ');
+                return false;
+            }
+            if (isValidSurv == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بالرفع المساحى قبل الحفظ');
+                return false;
+            }
+            if (isValidComplete == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة باستكمال الملف قبل الحفظ');
+                return false;
+            }
+            if (isValidFinish == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الخاصة بتقفيل الأخطاء قبل الحفظ');
+                return false;
+            }
+        });
+     
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                runContractValidation();
+                runValidityValidation();
+                LegalAffairsValidation();
+                SurveyingValidation();
+                CompletingValidaion();
+                FinishingValidation();
+            }, 100);
+        });
+    </script>
+}

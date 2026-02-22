@@ -1,0 +1,256 @@
+﻿@model Building_Permits.MVC.ViewModels.NotificationsPageViewModel;
+
+@{
+    ViewBag.Title = "الإشعارات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["deletefulfil"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["deletefulfil"]</div>
+}
+else @if (TempData["deletefulfil"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["deletefulfil"]</div>
+}
+<div class="container mt-4">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-desktop-1 col-tablet-4 col-mobile-6 mb-3">
+            <div class="stat-card stat-primary">
+                <div class="stat-card-icon"><i class="fas fa-bell"></i></div>
+                <div class="stat-card-number">@Model.TotalCount</div>
+                <div class="stat-card-label">إجمالي الإشعارات</div>
+            </div>
+        </div>
+        <div class="col-desktop-1 col-tablet-4 col-mobile-6 mb-3">
+            <div class="stat-card stat-warning">
+                <div class="stat-card-icon"><i class="fas fa-envelope"></i></div>
+                <div class="stat-card-number">@Model.UnreadCount</div>
+                <div class="stat-card-label">غير مقروءة</div>
+            </div>
+        </div>
+        <div class="col-desktop-1 col-tablet-4 col-mobile-6 mb-3">
+            <div class="stat-card stat-error">
+                <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-card-number">@Model.OverdueCount</div>
+                <div class="stat-card-label">متأخرة</div>
+            </div>
+        </div>
+        <div class="col-desktop-1 col-tablet-4 col-mobile-6 mb-3">
+            <div class="stat-card stat-info">
+                <div class="stat-card-icon"><i class="fas fa-archive"></i></div>
+                <div class="stat-card-number">@Model.ArchivedCount</div>
+                <div class="stat-card-label">مؤرشفة</div>
+            </div>
+        </div>
+        <div class="col-desktop-1 col-tablet-4 col-mobile-6 mb-3">
+            <div class="stat-card stat-success">
+                <div class="stat-card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-card-number">@Model.NeglectedCount</div>
+                <div class="stat-card-label">إهمال</div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .col-desktop-1 {
+            flex: 0 0 auto;
+            width: 20%; 
+        }
+
+        .col-tablet-4{
+            flex: 0 0 auto;
+            width: 20%;
+        }
+
+        .col-mobile-6{
+            flex: 0 0 auto;
+            width: 20%;
+        }
+
+        .stat-card {
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+
+        .stat-card-icon i {
+            font-size: 1rem;
+        }
+
+        .stat-card-number {
+            font-size: 1.2rem;
+        }
+
+        .stat-card-label {
+            font-size: 0.75rem;
+        }
+
+    </style>
+    <!-- Main Content -->
+    <div class="bp-card">
+        <div class="bp-card-header">
+            <h4 class="bp-card-title">
+                <i class="fas fa-bell"></i> الإشعارات
+            </h4>
+            <button type="button" class="bp-btn bp-btn-primary" onclick="markAllAsRead()">
+                <i class="fas fa-check-double"></i> تحديد الكل كمقروء
+            </button>
+        </div>
+        <!-- Filter Tabs -->
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <a class="bp-btn @(Model.FilterType == "all" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "all" })">
+                الكل (@Model.TotalCount)
+            </a>
+            <a class="bp-btn @(Model.FilterType == "unread" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "unread" })">
+                غير مقروءة (@Model.UnreadCount)
+            </a>
+            <a class="bp-btn @(Model.FilterType == "overdue" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "overdue" })">
+                متأخرة (@Model.OverdueCount)
+            </a>
+            <a class="bp-btn @(Model.FilterType == "archived" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "archived" })">
+                مؤرشفة (@Model.ArchivedCount)
+            </a>
+            <a class="bp-btn @(Model.FilterType == "neglected" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "neglected" })">
+                إهمال (@Model.NeglectedCount)
+            </a>
+            <a class="bp-btn @(Model.FilterType == "fulfil" ? "bp-btn-primary" : "bp-btn-outline")"
+               href="@Url.Action("GetAllNotifications", new { filterType = "fulfil" })">
+                استيفاء (@Model.FulfilCount)
+            </a>
+        </div>
+
+
+        <!-- Notifications List -->
+        @if (Model.Notifications.Any())
+        {
+            <div class="d-grid gap-3">
+                @foreach (var notification in Model.Notifications)
+                {
+                    <div class="bp-card p-3 @(notification.IsRead ? "" : "bg-danger")" id="notification-@notification.Id">
+                        <div class="d-flex justify-content-between align-items-start gap-3">
+                            <div class="d-flex gap-3">
+                                <div class="bp-card-icon">
+                                    <i class="@notification.NotificationIcon text-@notification.NotificationTypeClass"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">
+                                        <span class="badge bg-@notification.NotificationTypeClass">
+                                            @notification.Title
+                                        </span>
+                                        @if (!notification.IsRead)
+                                        {
+                                            <span class="badge bg-warning">جديد</span>
+                                        }
+                                    </h6>
+                                    <p class="mb-2 text-white">@notification.Message</p>
+
+                                    <div class="d-flex gap-3">
+                                        <small class="text-info"><i class="fas fa-user me-1"></i>العميل: @notification.ClientName</small>
+                                        <small class="text-info"><i class="fas fa-user-tie me-1"></i>المهندس: @notification.EngineerName</small>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(notification.StageName))
+                                    {
+                                        <div class="mt-2">
+                                            <small class="text-primary"><i class="fas fa-tasks me-1"></i>المرحلة: @notification.StageName</small>
+                                            @if (notification.DaysOverdue.HasValue && notification.DaysOverdue > 0)
+                                            {
+                                                <span class="badge bg-danger ms-2">
+                                                    متأخر @notification.DaysOverdue يوم
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column align-items-end">
+                                <small class="text-secondary mb-2">@notification.CreatedAtFormatted</small>
+                                @if (!notification.IsRead)
+                                {
+                                    <button class="bp-btn bp-btn-outline mb-2" onclick="markAsRead(@notification.Id)">
+                                        <i class="fas fa-check"></i> تم القراءة
+                                    </button>
+                                }
+                                @if (notification.NotificationType == "استيفاء" && notification.PermitId != null)
+                                {
+                                    <a class="btn btn-outline-warning btn-sm" onclick="return confirm('هل أنت متأكد من تمديد الاستيفاء؟');"
+                                       asp-action="ExtendFulfil" asp-controller="Permit" asp-route-id="@notification.PermitId">
+                                        تمديد الاستيفاء
+                                        <i class="fas fa-calendar-plus"></i>
+                                    </a>
+                                    <form asp-action="DeleteFormFulfil" asp-controller="Permit" asp-route-id="@notification.PermitId" method="post" onsubmit="return confirm('هل أنت متأكد من حذف الرخصة من الاستيفاء واستكمالها بشكل طبيعى؟');">
+                                        <button type="submit" class="btn btn-outline-info btn-sm">
+                                            حذف من الاستيفاء <i class="fas fa-undo"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <button class="bp-btn bp-btn-outline" onclick="deleteNotification(@notification.Id)">
+                                    <i class="fas fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center p-5">
+                <i class="fas fa-bell-slash fa-4x text-secondary mb-3"></i>
+                <h5 class="text-secondary">لا توجد إشعارات</h5>
+                <p class="text-secondary">
+                    @if (Model.FilterType == "all")
+                    {
+                        <text>لم يتم إنشاء أي إشعارات بعد.</text>
+                    }
+                    else
+                    {
+                        <text>لا توجد إشعارات من هذا النوع.</text>
+                    }
+                </p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function markAsRead(notificationId) {
+        $.post('@Url.Action("MarkAsRead")', { notificationId: notificationId })
+            .done(function() {
+                $('#notification-' + notificationId).removeClass('list-group-item-warning');
+                $('#notification-' + notificationId + ' .badge:contains("جديد")').remove();
+                location.reload(); // Refresh to update counters
+            });
+    }
+
+    function markAllAsRead() {
+        $.post('@Url.Action("MarkAllAsRead")')
+            .done(function(response) {
+                if (response.success) {
+                    toastr.success('تم تحديد ' + response.count + ' إشعار كمقروء');
+                    setTimeout(() => location.reload(), 1000);
+                }
+            });
+    }
+
+    function deleteNotification(notificationId) {
+        if (confirm('هل أنت متأكد من حذف هذا الإشعار؟')) {
+            $.ajax({
+                url: '@Url.Action("DeleteNotification")',
+                type: 'DELETE',
+                data: { notificationId: notificationId }
+            }).done(function() {
+                $('#notification-' + notificationId).fadeOut(300, function() {
+                    $(this).remove();
+                    location.reload(); // Refresh to update counters
+                });
+            });
+        }
+    }
+</script>

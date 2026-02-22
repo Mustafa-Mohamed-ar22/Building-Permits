@@ -1,0 +1,3 @@
+dotnet ef migrations add Identity --project ../Building_Permits.Infrastructure --startup-project .
+dotnet ef database update Identity --project ../Building_Permits.Infrastructure --startup-project .
+

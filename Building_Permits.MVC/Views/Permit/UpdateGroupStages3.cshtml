@@ -1,0 +1,399 @@
+﻿@model Building_Permits.MVC.ViewModels.UpdategroupStage3;
+
+@{
+    ViewData["Title"] = "المرحلة الثالثة - مراجعة المهندس منصور وأمر الدفع النهائى";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" dir="rtl">
+    <div class="row">
+        <div class="col">
+            <div class="bp-card">
+                <div class="bp-card-header">
+                    <h4 class="bp-card-title mb-0">
+                        <div class="bp-card-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        المرحلة الثالثة - مراجعة المهندس منصور وأمر الدفع النهائى
+                    </h4>
+                </div>
+                <div class="bp-card-body">
+                    <form asp-action="UpdateGroupStages3" method="post" enctype="multipart/form-data" id="stage3Form">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+                        <input asp-for="PermitId" type="hidden" />
+
+						<!-- مراجعة المهندس منصور -->
+						@if (User.IsInRole("Admin") || Model.EngineerMansourReview == false || Model.PermitStages?.FirstOrDefault(x => x.StageId == 11)?.CompletedAt?.Date == DateTime.Today)
+						{
+							<div class="bp-card mb-4">
+								<div class="bp-card-header">
+									<h5 class="bp-card-title">
+										<div class="bp-card-icon">
+											<i class="fas fa-user-check"></i>
+										</div>
+										مراجعة المهندس منصور
+									</h5>
+								</div>
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerMansourReview" type="checkbox" class="form-check-input" />
+													<input name="EngineerMansourReview" type="hidden" value="false" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerMansourReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerMansourImage, new { @class = "bp-form-label" })
+												@if (Model.EngineerMansourReview == true && Model.IsMansourHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 11 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsMansourHasExistedImage" type="hidden" value="true" />
+												}
+												<input asp-for="EngineerMansourImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<input asp-for="IsEngineerMansourHasImage" type="hidden" value="false" />
+												<span asp-validation-for="EngineerMansourImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.MasourNotes, new { @class = "bp-form-label" })
+												@Html.TextAreaFor(m => m.MasourNotes, new { @class = "bp-form-control", rows = "2" })
+											</div>
+										</div>
+									</div>
+
+									<input asp-for="IsMansourHasChanges" type="hidden" value="false" />
+								</div>
+							</div>
+						}
+						else
+						{
+							<div class="bp-card mb-4">
+								<div class="bp-card-header">
+									<h5 class="bp-card-title">
+										<div class="bp-card-icon">
+											<i class="fas fa-user-check"></i>
+										</div>
+										مراجعة المهندس منصور
+									</h5>
+								</div>
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="EngineerMansourReview" disabled class="form-check-input" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="EngineerMansourReview" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.EngineerMansourImage, new { @class = "bp-form-label" })
+												@if (Model.EngineerMansourReview == true && Model.IsMansourHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 11 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsMansourHasExistedImage" type="hidden" value="true" />
+												}
+												<input asp-for="EngineerMansourImage" type="file" disabled class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<span asp-validation-for="EngineerMansourImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-6">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.MasourNotes, new { @class = "bp-form-label" })
+												<input asp-for="MasourNotes" disabled class="bp-form-control" />
+											</div>
+										</div>
+									</div>
+
+									<input asp-for="IsMansourHasChanges" type="hidden" value="false" />
+								</div>
+							</div>
+						}
+
+						<!-- أمر الدفع النهائى -->
+						@if (User.IsInRole("Admin") || Model.FinalPayOrder == false || Model.PermitStages?.FirstOrDefault(x => x.StageId == 12)?.CompletedAt?.Date == DateTime.Today)
+						{
+							<div class="bp-card mb-4">
+								<div class="bp-card-header">
+									<h5 class="bp-card-title">
+										<div class="bp-card-icon">
+											<i class="fas fa-balance-scale"></i>
+										</div>
+										أمر الدفع النهائى
+									</h5>
+								</div>
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="FinalPayOrder" type="checkbox" class="form-check-input" />
+													<input name="FinalPayOrder" type="hidden" value="false" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="FinalPayOrder" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayTransactionNumber, new { @class = "bp-form-label" })
+												<input asp-for="FinalPayTransactionNumber" class="bp-form-control" />
+												<span asp-validation-for="FinalPayTransactionNumber" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayOrderImage, new { @class = "bp-form-label" })
+												@if (Model.FinalPayOrder == true && Model.IsFinalPayHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 12 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsFinalPayHasExistedImage" type="hidden" value="true" />
+												}
+												<input asp-for="FinalPayOrderImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<input asp-for="IsFinalPagyHasImage" type="hidden" value="false" />
+												<span asp-validation-for="FinalPayOrderImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayNotes, new { @class = "bp-form-label" })
+												@Html.TextAreaFor(m => m.FinalPayNotes, new { @class = "bp-form-control", rows = "2" })
+											</div>
+										</div>
+									</div>
+
+									<input asp-for="IsFinalPayHasChanges" type="hidden" value="false" />
+								</div>
+							</div>
+						}
+						else
+						{
+							<div class="bp-card mb-4">
+								<div class="bp-card-header">
+									<h5 class="bp-card-title">
+										<div class="bp-card-icon">
+											<i class="fas fa-balance-scale"></i>
+										</div>
+										أمر الدفع النهائى
+									</h5>
+								</div>
+								<div class="bp-card-body">
+									<div class="row">
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												<div class="d-flex align-items-center gap-2">
+													<input asp-for="FinalPayOrder" disabled class="form-check-input" />
+													<label class="bp-form-label">تم</label>
+												</div>
+												<span asp-validation-for="FinalPayOrder" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayTransactionNumber, new { @class = "bp-form-label" })
+												<input asp-for="FinalPayTransactionNumber" disabled class="bp-form-control" />
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayOrderImage, new { @class = "bp-form-label" })
+												@if (Model.FinalPayOrder == true && Model.IsFinalPayHasExistedImage)
+												{
+													<div class="mb-2">
+														<a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 12 })" target="_blank" class="bp-btn bp-btn-outline">
+															عرض الملف الحالى
+														</a>
+													</div>
+													<input asp-for="IsFinalPayHasExistedImage" type="hidden" value="true" />
+												}
+												<input asp-for="FinalPayOrderImage" type="file" disabled class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+												<span asp-validation-for="FinalPayOrderImage" class="text-danger"></span>
+											</div>
+										</div>
+
+										<div class="col-mobile-12 col-tablet-6 col-desktop-3">
+											<div class="bp-form-group">
+												@Html.LabelFor(m => m.FinalPayNotes, new { @class = "bp-form-label" })
+												<input asp-for="FinalPayNotes" disabled class="bp-form-control" />
+											</div>
+										</div>
+									</div>
+
+									<input asp-for="IsFinalPayHasChanges" type="hidden" value="false" />
+								</div>
+							</div>
+						}
+
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i> حفظ التغييرات
+                                </button>
+                               
+                            </div>
+                            <div>
+                                <a href="@Url.Action("Index", "Client")" class="bp-btn bp-btn-outline">
+                                    <i class="fas fa-arrow-left me-2"></i> العودة للقائمة
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            const fileInputs = [
+                { input: 'EngineerMansourImage', hidden: 'IsEngineerMansourHasImage' },
+                { input: 'FinalPayOrderImage', hidden: 'IsFinalPagyHasImage' }
+            ];
+
+            fileInputs.forEach(item => {
+                const fileInput = document.getElementById(item.input);
+                const hiddenField = document.getElementById(item.hidden);
+                if (fileInput && hiddenField) {
+                    fileInput.addEventListener('change', function () {
+                        hiddenField.value = fileInput.files.length > 0 ? 'true' : 'false';
+                        console.log(item.hidden, hiddenField.value);
+                        $(hiddenField).trigger('change');
+                    });
+                }
+            });
+        });
+
+
+        let isValidMansour = $('[name="EngineerMansourReview"]').is(':disabled') || !$('[name="EngineerMansourReview"]').is(':checked');
+        let isValidPayment = $('[name="FinalPayOrder"]').is(':disabled') || !$('[name="FinalPayOrder"]').is(':checked');
+
+        var originalMansourState = $('[name="EngineerMansourReview"]:checkbox').is(':checked');
+        var originalPayState = $('[name="FinalPayOrder"]:checkbox').is(':checked');
+
+        var runMansourValidation = function () {
+            if ($('[name="EngineerMansourReview"]').is(':disabled')) {
+                isValidMansour = true;
+                return;
+            }
+            var currentState = $('[name="EngineerMansourReview"]').is(':checked');
+
+            var data = {
+                EngineerMansourReview: currentState,
+                IsEngineerMansourHasImage: $('[name="IsEngineerMansourHasImage"]').val() === 'true',
+                IsMansourHasExistedImage: $('[name="IsMansourHasExistedImage"]').val() === 'true',
+            };
+
+            $.get('/Remote/isValidMansourReview', data).done(function (response) {
+                console.log('EngineerMansourReview remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="EngineerMansourReview"]');
+                if (response === true) {
+                    isValidMansour = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidMansour = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        };
+        $('[name="EngineerMansourReview"], [name="IsEngineerMansourHasImage"],[name="IsMansourHasExistedImage"]').on('change keyup input blur click', runMansourValidation);
+
+
+
+        var runPaymentValidation = function () {
+            if ($('[name="FinalPayOrder"]').is(':disabled')) {
+                isValidShadyReview = true;
+                return;
+            }
+            var currentState = $('[name="FinalPayOrder"]').is(':checked');
+
+            var data = {
+                FinalPayOrder: currentState,
+                IsFinalPagyHasImage: $('[name="IsFinalPagyHasImage"]').val() === 'true',
+                IsFinalPayHasExistedImage: $('[name="IsFinalPayHasExistedImage"]').val() === 'true',
+                FinalPayTransactionNumber: $('[name="FinalPayTransactionNumber"]').val(),
+            };
+
+            $.get('/Remote/isValidPayment', data).done(function (response) {
+                console.log('FinalPayOrder remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="FinalPayOrder"]');
+                if (response === true) {
+                    isValidPayment = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidPayment = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        };
+
+        $('[name="FinalPayOrder"], [name="IsFinalPagyHasImage"],[name="IsFinalPayHasExistedImage"],[name="FinalPayTransactionNumber"]').on('change keyup input blur click', runPaymentValidation);
+
+        $('#stage3Form').on('submit', function (e) {
+            var hasErrors = $('.field-validation-error:visible').length > 0 ||
+                $('.text-danger:not(:empty)').length > 0;
+            if (isValidMansour == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بمراحعة المهندس منصور قبل الحفظ');
+                return false;
+            }
+            if (isValidPayment == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء بأمر الدفع النهائى قبل الحفظ');
+                return false;
+            }
+
+        });
+        // Track changes
+        $('#EngineerMansourImage, [name="EngineerMansourReview"], [name="MasourNotes"]').on('change keyup', function () {
+            $('[name="IsMansourHasChanges"]').val('true');
+        });
+
+        $('#FinalPayOrderImage, [name="FinalPayOrder"], [name="FinalPayTransactionNumber"], [name="FinalPayNotes"]').on('change keyup', function () {
+            $('[name="IsFinalPayHasChanges"]').val('true');
+        });
+        $(document).ready(function () {
+            setTimeout(function () {
+                runMansourValidation();
+                runPaymentValidation();
+            }, 100);
+        });
+    </script>
+}

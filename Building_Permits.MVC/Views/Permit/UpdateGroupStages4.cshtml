@@ -1,0 +1,273 @@
+﻿@model Building_Permits.MVC.ViewModels.UpdategroupStage4
+
+@{
+    ViewData["Title"] = "المرحلة الرابعة - طباعة واستلام التصريح";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" dir="rtl">
+    <div class="row">
+        <div class="col">
+            <div class="bp-card">
+                <div class="bp-card-header">
+                    <h4 class="bp-card-title mb-0">
+                        <div class="bp-card-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        المرحلة الرابعة - طباعة واستلام التصريح
+                    </h4>
+                </div>
+                <div class="bp-card-body">
+                    <form asp-action="UpdateGroupStages4" method="post" enctype="multipart/form-data" id="stage4Form">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        @Html.AntiForgeryToken()
+                        <input asp-for="PermitId" type="hidden" />
+
+                        <!-- الطباعة -->
+                        @if (User.IsInRole("Admin") || Model.Printing == false || Model.PermitStages?.FirstOrDefault(x => x.StageId == 13)?.CompletedAt?.Date == DateTime.Today)
+                        {
+                            <div class="bp-card mb-4">
+                                <div class="bp-card-header">
+                                    <h5 class="bp-card-title">
+                                        <div class="bp-card-icon">
+                                            <i class="fas fa-print"></i>
+                                        </div>
+                                        الطباعة
+                                    </h5>
+                                </div>
+                                <div class="bp-card-body">
+                                    <div class="row">
+                                        <div class="col-mobile-12 col-tablet-6 col-desktop-3">
+                                            <div class="bp-form-group">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <input asp-for="Printing" type="checkbox" class="form-check-input" />
+                                                    <input name="Printing" type="hidden" value="false" />
+                                                    <label class="bp-form-label">تم</label>
+                                                </div>
+                                                <span asp-validation-for="Printing" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                            <div class="bp-form-group">
+                                                @Html.LabelFor(m => m.PrintingImage, new { @class = "bp-form-label" })
+                                                @if (Model.Printing == true && Model.IsPrintingHasExistedImage)
+                                                {
+                                                    <div class="mb-2">
+                                                        <a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 13 })"
+                                                           target="_blank" class="bp-btn bp-btn-outline">
+                                                            عرض الملف الحالى
+                                                        </a>
+                                                    </div>
+                                                    <input asp-for="IsPrintingHasExistedImage" type="hidden" value="true" />
+                                                }
+                                                <input asp-for="PrintingImage" type="file" class="bp-form-control" accept=".pdf,.jpg,.jpeg,.png" />
+                                                <input asp-for="IsPrinitingHasImage" type="hidden" value="false" />
+                                                <span asp-validation-for="PrintingImage" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input asp-for="IsPrintingHasChanges" type="hidden" value="false" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="bp-card mb-4">
+                                <div class="bp-card-header">
+                                    <h5 class="bp-card-title">
+                                        <div class="bp-card-icon">
+                                            <i class="fas fa-print"></i>
+                                        </div>
+                                        الطباعة
+                                    </h5>
+                                </div>
+                                <div class="bp-card-body">
+                                    <div class="row">
+                                        <div class="col-mobile-12 col-tablet-6 col-desktop-3">
+                                            <div class="bp-form-group">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <input asp-for="Printing" disabled class="form-check-input" />
+                                                    <label class="bp-form-label">تم</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-mobile-12 col-tablet-6 col-desktop-4">
+                                            <div class="bp-form-group">
+                                                <label class="bp-form-label">تم رفع المستند مسبقاً</label>
+                                                @if (Model.Printing == true && Model.IsPrintingHasExistedImage)
+                                                {
+                                                    <div class="mb-2">
+                                                        <a href="@Url.Action("GetFile", "Permit", new { permitId = Model.PermitId, stageId = 13 })"
+                                                           target="_blank" class="bp-btn bp-btn-outline">
+                                                            عرض الملف الحالى
+                                                        </a>
+                                                    </div>
+                                                    <input asp-for="IsPrintingHasExistedImage" type="hidden" value="true" />
+                                                }
+                                                <input asp-for="PrintingImage" type="file" disabled class="bp-form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input asp-for="IsPrintingHasChanges" type="hidden" value="false" />
+                            </div>
+                        }
+
+                        <!-- استلام التصريح -->
+                        <div class="bp-card mb-4">
+                            <div class="bp-card-header">
+                                <h5 class="bp-card-title">
+                                    <div class="bp-card-icon">
+                                        <i class="fas fa-file-signature"></i>
+                                    </div>
+                                    استلام التصريح
+                                </h5>
+                            </div>
+                            <div class="bp-card-body">
+                                <div class="bp-form-group">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input asp-for="IsPermitReceived" type="checkbox" class="form-check-input" />
+                                        <label class="bp-form-label">تم استلام التصريح</label>
+                                    </div>
+                                    <span asp-validation-for="IsPermitReceived" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-save me-2"></i> حفظ التغييرات
+                                </button>
+                               
+                            </div>
+                            <div>
+                                <a href="@Url.Action("Index", "Client")" class="bp-btn bp-btn-outline">
+                                    <i class="fas fa-arrow-left me-2"></i> العودة للقائمة
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // File input sync
+            const fileInput = document.getElementById('PrintingImage');
+            const hiddenField = document.getElementById('IsPrinitingHasImage');
+
+            if (fileInput && hiddenField) {
+                fileInput.addEventListener('change', function () {
+                    hiddenField.value = fileInput.files.length > 0 ? 'true' : 'false';
+                    console.log('IsPrinitingHasImage', hiddenField.value);
+                    $(hiddenField).trigger('change');
+                });
+            }
+            // Track changes in Printing section
+            $('#PrintingImage, [name="Printing"]').on('change keyup', function () {
+                $('[name="IsPrintingHasChanges"]').val('true');
+            });
+        });
+
+        let isValidPrint = $('[name="Printing"]').is(':disabled') || !$('[name="Printing"]').is(':checked');
+        let isValidReceive = $('[name="IsPermitReceived"]').is(':disabled') || !$('[name="IsPermitReceived"]').is(':checked');
+
+
+        var originalPrintingState = $('[name="Printing"]:checkbox').is(':checked');
+        var originalReceivinggState = $('[name="IsPermitReceived"]:checkbox').is(':checked');
+
+        var runPrintingValidation = function () {
+            if ($('[name="Printing"]').is(':disabled')) {
+                isValidMansour = true;
+                return;
+            }
+            var currentState = $('[name="Printing"]').is(':checked');
+
+            var data = {
+                Printing: currentState,
+                IsPrinitingHasImage: $('[name="IsPrinitingHasImage"]').val() === 'true',
+                IsPrintingHasExistedImage: $('[name="IsPrintingHasExistedImage"]').val() === 'true',
+            };
+
+            $.get('/Remote/isValidPrinting', data).done(function (response) {
+                console.log('Printing remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="Printing"]');
+                if (response === true) {
+                    isValidPrint = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidPrint = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        };
+        $('[name="Printing"], [name="IsPrinitingHasImage"],[name="IsPrintingHasExistedImage"]').on('change keyup input blur click', runPrintingValidation);
+
+
+
+        var runReceivingValidation = function () {
+            if ($('[name="IsPermitReceived"]').is(':disabled')) {
+                isValidReceive = true;
+                return;
+            }
+            var currentState = $('[name="IsPermitReceived"]').is(':checked');
+
+            var data = {
+                IsPermitReceived: currentState,
+                IsPrinitingHasImage: $('[name="IsPrinitingHasImage"]').val() === 'true',
+                IsPrintingHasExistedImage: $('[name="IsPrintingHasExistedImage"]').val() === 'true',
+                Printing: $('[name="Printing"]').is(':checked')
+            };
+
+            $.get('/Remote/isValidReceving', data).done(function (response) {
+                console.log('Receving remote validation response:', response);
+                var errorSpan = $('[data-valmsg-for="IsPermitReceived"]');
+                if (response === true) {
+                    isValidReceive = true;
+                    errorSpan.text('').removeClass('field-validation-error').addClass('field-validation-valid');
+                } else if (typeof response === 'string') {
+                    isValidReceive = false;
+                    errorSpan.text(response).removeClass('field-validation-valid').addClass('field-validation-error');
+                }
+            });
+        };
+        $('[name="IsPermitReceived"]').on('change keyup input blur click', runReceivingValidation);
+
+        $('#stage4Form').on('submit', function (e) {
+            // Check for any visible validation errors
+            var hasErrors = $('.field-validation-error:visible').length > 0 ||
+                $('.text-danger:not(:empty)').length > 0;
+
+            if (isValidPrint == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بالطباعة قبل الحفظ');
+                return false;
+            }
+            if (isValidReceive == false) {
+                e.preventDefault();
+                alert('يرجى تصحيح الأخطاء الخاصة بتسليم الملف قبل الحفظ');
+                return false;
+            }
+            
+        });
+        $(document).ready(function () {
+            setTimeout(function () {
+                runPrintingValidation();
+                runReceivingValidation();
+            }, 100);
+        });
+    </script>
+}

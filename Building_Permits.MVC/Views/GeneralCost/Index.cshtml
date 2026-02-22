@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Building_Permits.MVC.ViewModels.IndexGeneralCostsVM>
+
+@{
+    ViewData["Title"] = "المصروفات العامة";
+    decimal x = 0;
+}
+
+@if (TempData["addgncost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["addgncost"]</div>
+}
+else if (TempData["editgncost"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["editgncost"]</div>
+}
+else if (TempData["DeleteGNCOst"] != null)
+{
+    <div class="bp-alert bp-alert-success">@TempData["DeleteGNCOst"]</div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="fas fa-coins"></i> المصروفات العامة</h2>
+    <a asp-action="Create" asp-controller="GeneralCost" class="bp-btn bp-btn-primary">
+        <i class="fas fa-plus"></i> إضافة مصروف جديد
+    </a>
+</div>
+
+<div class="bp-table-responsive">
+    <table class="bp-table">
+        <thead>
+            <tr>
+                <th>المبلغ</th>
+                <th>السبب</th>
+                <th>تاريخ الإضافة</th>
+                <th>تمت الإضافة بواسطة</th>
+                <th class="no-print">تعديل</th>
+                <th class="no-print">حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                
+                    x += item.Amount;
+                
+                <tr>
+                    <td data-label="المبلغ">@item.Amount</td>
+                    <td data-label="السبب">@item.AmountFor</td>
+                    <td data-label="تاريخ الإضافة">@item.AddedAt</td>
+                    <td data-label="تمت الإضافة بواسطة">@item.AddedBy</td>
+                    <td data-label="تعديل" class="no-print">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="bp-btn bp-btn-secondary bp-btn-sm">
+                            ✏️ تعديل
+                        </a>
+                    </td>
+                    <td data-label="حذف" class="no-print">
+                        <a onclick="return confirm('هل أنت متأكد من حذف المصروف @item.AmountFor ؟')" asp-action="Delete" asp-route-id="@item.Id" class="bp-btn bp-btn-secondary bp-btn-sm">
+                            ✏ حذف
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="bp-card-body">
+    <div class="mb-3">
+        <h4 class="text-success fw-bold mb-0">
+            إجمالي التكاليف : @x ج.م
+        </h4>
+    </div>
+</div>

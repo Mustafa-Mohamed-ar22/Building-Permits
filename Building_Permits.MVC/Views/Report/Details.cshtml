@@ -1,0 +1,36 @@
+﻿@model Building_Permits.Core.Entities.Report
+
+@{
+    ViewData["Title"] = "تفاصيل التقرير";
+}
+<div class="bp-card my-4">
+    <div class="bp-card-header">
+        <h3 class="bp-card-title">
+            <i class="fas fa-file-alt"></i> @Model.Title
+        </h3>
+        <span class="badge @(Model.HasCriticalIssues ? "bp-alert-error" : "bp-alert-success")">
+            @(Model.HasCriticalIssues ? "⚠️ يحتوي على مشاكل حرجة" : "✔️ تقرير آمن")
+        </span>
+        <button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()">
+            <i class="fas fa-print"></i> طباعة
+        </button>
+    </div>
+
+    <div class="p-3 ">
+        <p><strong>الفترة:</strong> @Model.Period</p>
+        <p><strong>تاريخ الإنشاء:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+
+        <hr class="mb-3" />
+
+        <div class="p-3 printPDF" dir="rtl"
+             style="white-space: pre-wrap; line-height: 1.6; text-align: right;">
+            <p>@Model.Content</p>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-controller="Report" asp-action="Index" class="bp-btn bp-btn-outline">
+        ⬅ العودة للتقارير
+    </a>
+</div>

@@ -1,0 +1,101 @@
+﻿@model IEnumerable<Building_Permits.Core.Entities.Client>
+@if (User.IsInRole("Admin"))
+{
+	<button type="button" class="bp-btn bp-btn-primary" onclick="printPDF()" style="float:inline-end;">
+		<i class="fas fa-print"></i> طباعة
+	</button>
+}
+
+<div class="mt-3 printPDF">
+	<table class="bp-table-responsive">
+		<thead>
+			<tr>
+				<th>الاسم بالكامل</th>
+				<th>الرقم القومى</th>
+				<th>التليفون</th>
+				<th>العنوان</th>
+				<th class="no-print">الرخصة</th>
+				@if (User.IsInRole("Admin"))
+				{
+					<th class="text-center  no-print">الحساب</th>
+				}
+				@if (User.Identity.IsAuthenticated)
+				{
+					<th class="text-center  no-print">المصروفات</th>
+				}
+				<th  class="no-print">تعديل</th>
+				<th  class="no-print">تفاصيل</th>
+				@if (User.IsInRole("Admin"))
+				{
+					<th  class="no-print">استيفاء</th>
+					<th  class="no-print">حذف</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td data-label="الاسم بالكامل" class="single-line">@item.FullName</td>
+					<td data-label="الرقم القومى" class="single-line">@item.NationalId</td>
+					<td data-label="التليفون" class="single-line">@item.Phone</td>
+					<td data-label="العنوان">@item.Address</td>
+					<td data-label="الرخصة" class="no-print">
+						@if (item.Permit.Current_Execution_Stage == 1)
+						{
+							<a href="/Permit/UpdateStageGroup1/@item.PermitId">إضافة بند</a>
+						}
+						else if (item.Permit.Current_Execution_Stage == 2)
+						{
+							<a href="/Permit/UpdateGroupStages2/@item.PermitId">إضافة بند</a>
+						}
+						else if (item.Permit.Current_Execution_Stage == 3)
+						{
+							<a href="/Permit/UpdateGroupStages3/@item.PermitId">إضافة بند</a>
+						}
+						else if (item.Permit.Current_Execution_Stage == 4)
+						{
+							<a href="/Permit/UpdateGroupStages4/@item.PermitId">إضافة بند</a>
+						}
+					</td>
+
+					@if (User.IsInRole("Admin"))
+					{
+						if (item.Permit.ExpenseId is null)
+						{
+							<td data-label="الحساب" class="no-print"><a asp-action="AddExpense" asp-controller="Expense" asp-route-id="@item.PermitId" class="bp-btn bp-btn-secondary text-center single-line">➕إنشاء </a></td>
+						}
+						else
+						{
+							<td data-label="الحساب" class="no-print"><a asp-action="ExpenseDetails" asp-controller="Expense" asp-route-id="@item.PermitId" class="single-line">📊 الحساب</a></td>
+						}
+					}
+
+					@if (User.Identity.IsAuthenticated)
+					{
+						<td data-label="المصروفات" class="no-print"><a asp-action="AddCost" asp-controller="Cost" asp-route-id="@item.PermitId" class="bp-btn bp-btn-secondary text-center single-line">💰 إضافة</a></td>
+						
+					}
+
+					<td data-label="تعديل" class="no-print"><a href="/Client/Update/@item.Id">✏️ تعديل</a></td>
+					<td data-label="تفاصيل" class="no-print"><a asp-action="PermitDetails" asp-controller="Permit" asp-route-id="@item.PermitId">🔍 تفاصيل</a></td>
+					@if(User.IsInRole("Admin"))
+					{
+						@if (item.Permit.isPaused == false)
+						{
+							<td class="no-print">
+								<a class="btn btn-outline-info btn-sm single-line  " onclick="return confirm('هل أنت متأكد من نقل رخصة إالى الاستيفاء؟ ');"
+								   asp-action="Fulfillment" asp-controller="Permit" asp-route-id="@item.PermitId">استيفاء</a>
+							</td>
+							<td class="no-print">
+								<a class="btn btn-outline-info btn-sm single-line  " onclick="return confirm('هل أنت متأكد من حذف الرخصة؟ ');"
+								   asp-action="DeleteV1" asp-controller="Permit" asp-route-id="@item.PermitId">حذف</a>
+							</td>
+						}
+					}else{<td class="no-print"></td>}
+					
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
